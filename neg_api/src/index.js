@@ -1,14 +1,14 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const cors = require('cors');
-const dotenv = require('dotenv');
 
-dotenv.config();
+require('dotenv').config();
 
 const { normalizePort } = require('./utils/validate-utils');
 
-const contratoRoute = require('./routes/contracts-route');
+const contratoRoute = require('./routes/contract-routes');
 
 const port = normalizePort(process.env.PORT) || 3000;
 
@@ -17,9 +17,30 @@ const app = express();
 app.use(helmet());
 app.use(cors());
 app.use(morgan('combined'));
+app.use(bodyParser.json());
 
-app.use('/contratos', contratoRoute);
+app.use('/api/v1/contratos', contratoRoute);
 
-app.use('/', (req, res) => res.json({ header: req.header, body: req.body }).end());
+app.use((err, req, res, next) => {
+    console.error(err);
+    return res
+        .status(500)
+        .json({
+            status: 500,
+            statusText: "Internal Server Error",
+            error: err.message
+        })
+        .end();
+});
 
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
+app.use((req, res) => {
+    return res
+        .status(404)
+        .json({
+            status: 404,
+            statusText: "Not Found"
+        })
+        .end();
+});
+
+app.listen(port, () => console.log(`Example app listening at ${port}`));
