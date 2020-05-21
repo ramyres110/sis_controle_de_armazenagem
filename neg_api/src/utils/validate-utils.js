@@ -35,7 +35,7 @@ const invalidsCNPJList = [
 function validateCNPJ(cnpj) {
     if (!cnpj) return false;
 
-    let aux = (isNaN(cnpj)) ? cnpj.replace(/[^\d]+/g, '') : cnpj.toString();
+    const aux = (isNaN(cnpj)) ? cnpj.replace(/[^\d]+/g, '') : cnpj.toString();
     if (aux == '') return false;
     if (aux.length != 14) return false;
     if (invalidsCNPJList.indexOf(aux) > 0) return false;
@@ -46,7 +46,7 @@ function validateCNPJ(cnpj) {
 
     let calc = 0;
     let pos = length - 7;
-    for (i = length; i >= 1; i--) {
+    for (let i = length; i >= 1; i--) {
         calc += numbers.charAt(length - i) * pos--;
         if (pos < 2) {
             pos = 9;
@@ -60,7 +60,7 @@ function validateCNPJ(cnpj) {
     calc = 0;
     pos = length - 7;
 
-    for (i = length; i >= 1; i--) {
+    for (let i = length; i >= 1; i--) {
         calc += numbers.charAt(length - i) * pos--;
         if (pos < 2)
             pos = 9;
@@ -77,7 +77,25 @@ function validateCNPJ(cnpj) {
  * @returns {boolean}
  */
 function validateCPF(cpf) {
+    if (!cpf) return false;
+    const aux = (isNaN(cpf)) ? cpf.replace(/[^\d]+/g, '') : cpf.toString();
+    if (aux == "00000000000") return false;
+    let calc;
+    let result;
+    calc = 0;
+    for (let i = 1; i <= 9; i++) calc = calc + parseInt(aux.substring(i - 1, i)) * (11 - i);
+    result = (calc * 10) % 11;
 
+    if ((result == 10) || (result == 11)) result = 0;
+    if (result != parseInt(aux.substring(9, 10))) return false;
+
+    calc = 0;
+    for (let i = 1; i <= 10; i++) calc = calc + parseInt(aux.substring(i - 1, i)) * (12 - i);
+    result = (calc * 10) % 11;
+    if ((result == 10) || (result == 11)) result = 0;
+
+    if (result != parseInt(aux.substring(10, 11))) return false;
+    return true;
 }
 
 module.exports = {
