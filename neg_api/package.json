@@ -11,7 +11,8 @@
     "dev": "nodemon src/index.js",
     "test": "mocha src/test",
     "test-watch": "mocha src/test -w",
-    "build": "webpack"
+    "build": "webpack",
+    "lint":"eslint --ignore-pattern src/test/** src/**/*.js"
   },
   "keywords": [],
   "author": "Ramyres110 <ramyres90@gmail.com>",
@@ -25,6 +26,7 @@
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
+    "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
