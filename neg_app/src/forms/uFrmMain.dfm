@@ -26,10 +26,6 @@ object FrmMain: TFrmMain
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitLeft = 304
-    ExplicitTop = 200
-    ExplicitWidth = 185
-    ExplicitHeight = 41
     object Panel2: TPanel
       Left = 0
       Top = 0
@@ -40,7 +36,6 @@ object FrmMain: TFrmMain
       Color = clWindowFrame
       ParentBackground = False
       TabOrder = 0
-      ExplicitHeight = 385
       object SpeedButton2: TSpeedButton
         AlignWithMargins = True
         Left = 3
@@ -288,9 +283,6 @@ object FrmMain: TFrmMain
           Value = 24.000000000000000000
         end>
       TabOrder = 1
-      ExplicitLeft = 0
-      ExplicitWidth = 769
-      ExplicitHeight = 385
       object ScrollBox1: TScrollBox
         Left = 1
         Top = 49
@@ -309,8 +301,6 @@ object FrmMain: TFrmMain
         ParentColor = False
         ParentFont = False
         TabOrder = 0
-        ExplicitWidth = 195
-        ExplicitHeight = 311
         object Panel11: TPanel
           AlignWithMargins = True
           Left = 3
@@ -330,7 +320,6 @@ object FrmMain: TFrmMain
           ParentBackground = False
           ParentFont = False
           TabOrder = 0
-          ExplicitWidth = 189
           object Label5: TLabel
             AlignWithMargins = True
             Left = 5
@@ -359,7 +348,6 @@ object FrmMain: TFrmMain
             Align = alTop
             BevelOuter = bvNone
             TabOrder = 0
-            ExplicitWidth = 185
             object SpeedButton3: TSpeedButton
               Left = 164
               Top = 0
@@ -473,7 +461,6 @@ object FrmMain: TFrmMain
             Align = alBottom
             Caption = 'Lan'#231'ar Peso 1'
             TabOrder = 1
-            ExplicitWidth = 179
           end
           object Edit1: TEdit
             AlignWithMargins = True
@@ -483,7 +470,6 @@ object FrmMain: TFrmMain
             Height = 24
             Align = alBottom
             TabOrder = 2
-            ExplicitWidth = 179
           end
         end
       end
@@ -505,9 +491,6 @@ object FrmMain: TFrmMain
         ParentColor = False
         ParentFont = False
         TabOrder = 1
-        ExplicitLeft = 196
-        ExplicitWidth = 189
-        ExplicitHeight = 311
       end
       object ScrollBox3: TScrollBox
         Left = 407
@@ -527,9 +510,6 @@ object FrmMain: TFrmMain
         ParentColor = False
         ParentFont = False
         TabOrder = 2
-        ExplicitLeft = 385
-        ExplicitWidth = 191
-        ExplicitHeight = 311
       end
       object ScrollBox4: TScrollBox
         Left = 609
@@ -549,9 +529,6 @@ object FrmMain: TFrmMain
         ParentColor = False
         ParentFont = False
         TabOrder = 3
-        ExplicitLeft = 576
-        ExplicitWidth = 192
-        ExplicitHeight = 311
         object Panel16: TPanel
           AlignWithMargins = True
           Left = 3
@@ -570,7 +547,6 @@ object FrmMain: TFrmMain
           ParentBackground = False
           ParentFont = False
           TabOrder = 0
-          ExplicitWidth = 186
           object Label13: TLabel
             AlignWithMargins = True
             Left = 5
@@ -609,7 +585,6 @@ object FrmMain: TFrmMain
             Align = alTop
             BevelOuter = bvNone
             TabOrder = 0
-            ExplicitWidth = 182
             object SpeedButton6: TSpeedButton
               Left = 162
               Top = 0
@@ -732,7 +707,6 @@ object FrmMain: TFrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 4
-        ExplicitWidth = 195
       end
       object Panel3: TPanel
         Left = 207
@@ -751,8 +725,6 @@ object FrmMain: TFrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 5
-        ExplicitLeft = 196
-        ExplicitWidth = 189
       end
       object Panel4: TPanel
         Left = 407
@@ -771,8 +743,6 @@ object FrmMain: TFrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 6
-        ExplicitLeft = 385
-        ExplicitWidth = 191
       end
       object Panel5: TPanel
         Left = 609
@@ -791,8 +761,6 @@ object FrmMain: TFrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 7
-        ExplicitLeft = 576
-        ExplicitWidth = 192
         DesignSize = (
           204
           48)
@@ -858,8 +826,6 @@ object FrmMain: TFrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 8
-        ExplicitTop = 360
-        ExplicitWidth = 195
       end
       object Panel7: TPanel
         Left = 207
@@ -878,9 +844,6 @@ object FrmMain: TFrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 9
-        ExplicitLeft = 196
-        ExplicitTop = 360
-        ExplicitWidth = 189
       end
       object Panel8: TPanel
         Left = 407
@@ -899,9 +862,6 @@ object FrmMain: TFrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 10
-        ExplicitLeft = 385
-        ExplicitTop = 360
-        ExplicitWidth = 191
       end
       object Panel9: TPanel
         Left = 609
@@ -920,9 +880,6 @@ object FrmMain: TFrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 11
-        ExplicitLeft = 576
-        ExplicitTop = 360
-        ExplicitWidth = 192
       end
     end
     object Panel12: TPanel
@@ -935,8 +892,6 @@ object FrmMain: TFrmMain
       Color = clWhite
       ParentBackground = False
       TabOrder = 2
-      ExplicitLeft = -1
-      ExplicitTop = 507
       object LblUserInfo: TLabel
         AlignWithMargins = True
         Left = 3
@@ -968,7 +923,7 @@ object FrmMain: TFrmMain
     object Registros1: TMenuItem
       Caption = 'Registros'
       object RegistrodeProdutor1: TMenuItem
-        Caption = 'Produtor'
+        Caption = 'Produtores'
         OnClick = RegistrodeProdutor1Click
       end
       object RegistrodeGros1: TMenuItem
@@ -981,6 +936,17 @@ object FrmMain: TFrmMain
       object Contratos1: TMenuItem
         Caption = 'Contratos'
         OnClick = Contratos1Click
+      end
+      object N4: TMenuItem
+        Caption = '-'
+      end
+      object ArmazmSilo1: TMenuItem
+        Caption = 'Armaz'#233'ns/Silos'
+        OnClick = ArmazmSilo1Click
+      end
+      object Usurio1: TMenuItem
+        Caption = 'Usu'#225'rios'
+        OnClick = Usurio1Click
       end
     end
     object Help1: TMenuItem

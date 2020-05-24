@@ -1,7 +1,7 @@
-object FrmGrain: TFrmGrain
+object FrmUser: TFrmUser
   Left = 0
   Top = 0
-  Caption = 'FrmGrain'
+  Caption = 'FrmUser'
   ClientHeight = 361
   ClientWidth = 584
   Color = clBtnFace
@@ -11,7 +11,7 @@ object FrmGrain: TFrmGrain
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
-  Position = poMainFormCenter
+  Position = poDesktopCenter
   PixelsPerInch = 96
   TextHeight = 16
   object PnlFull: TPanel
@@ -30,8 +30,8 @@ object FrmGrain: TFrmGrain
     ParentBackground = False
     ParentFont = False
     TabOrder = 0
-    ExplicitWidth = 447
-    ExplicitHeight = 201
+    ExplicitWidth = 554
+    ExplicitHeight = 289
     object Panel1: TPanel
       Left = 1
       Top = 1
@@ -48,7 +48,7 @@ object FrmGrain: TFrmGrain
       ParentBackground = False
       ParentFont = False
       TabOrder = 0
-      ExplicitWidth = 445
+      ExplicitWidth = 552
     end
   end
 end

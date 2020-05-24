@@ -33,10 +33,6 @@ object FrmLogin: TFrmLogin
     ParentBackground = False
     ParentFont = False
     TabOrder = 0
-    ExplicitLeft = 96
-    ExplicitTop = 8
-    ExplicitWidth = 400
-    ExplicitHeight = 300
     object LblLoginError: TLabel
       Left = 112
       Top = 231
@@ -104,8 +100,6 @@ object FrmLogin: TFrmLogin
       ParentBackground = False
       ParentFont = False
       TabOrder = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
       object Label1: TLabel
         Left = 16
         Top = 12

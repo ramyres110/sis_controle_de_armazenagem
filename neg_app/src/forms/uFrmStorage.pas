@@ -1,4 +1,4 @@
-unit uFrmContract;
+unit uFrmStorage;
 
 interface
 
@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls;
 
 type
-  TFrmContract = class(TForm)
+  TFrmStorage = class(TForm)
     PnlFull: TPanel;
     Panel1: TPanel;
   private
@@ -17,7 +17,7 @@ type
   end;
 
 var
-  FrmContract: TFrmContract;
+  FrmStorage: TFrmStorage;
 
 implementation
 

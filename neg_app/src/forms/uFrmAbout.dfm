@@ -1,9 +1,10 @@
 object FrmAbout: TFrmAbout
   Left = 0
   Top = 0
-  Caption = 'FrmAbout'
-  ClientHeight = 201
-  ClientWidth = 447
+  BorderStyle = bsDialog
+  Caption = 'Sobre'
+  ClientHeight = 211
+  ClientWidth = 457
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -12,6 +13,78 @@ object FrmAbout: TFrmAbout
   Font.Style = []
   OldCreateOrder = False
   Position = poMainFormCenter
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 16
+  object PnlFull: TPanel
+    Left = 0
+    Top = 0
+    Width = 457
+    Height = 211
+    Align = alClient
+    BevelOuter = bvLowered
+    Color = 14149873
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentBackground = False
+    ParentFont = False
+    TabOrder = 0
+    ExplicitLeft = -107
+    ExplicitTop = -88
+    ExplicitWidth = 554
+    ExplicitHeight = 289
+    object LblAbout: TLabel
+      AlignWithMargins = True
+      Left = 4
+      Top = 52
+      Width = 449
+      Height = 155
+      Align = alClient
+      Caption = '...'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      ExplicitWidth = 12
+      ExplicitHeight = 16
+    end
+    object Panel1: TPanel
+      Left = 1
+      Top = 1
+      Width = 455
+      Height = 48
+      Align = alTop
+      BevelOuter = bvNone
+      Color = 2716773
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 0
+      ExplicitLeft = 2
+      ExplicitTop = 0
+      ExplicitWidth = 445
+      object Label1: TLabel
+        Left = 16
+        Top = 12
+        Width = 41
+        Height = 19
+        Caption = 'Sobre'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -16
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+    end
+  end
 end

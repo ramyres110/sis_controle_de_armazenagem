@@ -15,7 +15,16 @@ uses
   uSrvDatabase in 'services\uSrvDatabase.pas',
   uMdlUser in 'models\uMdlUser.pas',
   uMdlStorage in 'models\uMdlStorage.pas',
-  uFrmLogin in 'forms\uFrmLogin.pas' {FrmLogin};
+  uFrmLogin in 'forms\uFrmLogin.pas' {FrmLogin},
+  uUtlCrypto in 'utils\uUtlCrypto.pas',
+  uEntUser in 'entities\uEntUser.pas',
+  uEntProducer in 'entities\uEntProducer.pas',
+  uEntGeneric in 'entities\uEntGeneric.pas',
+  uEntGrain in 'entities\uEntGrain.pas',
+  uEntStorage in 'entities\uEntStorage.pas',
+  uEntContract in 'entities\uEntContract.pas',
+  uFrmUser in 'forms\uFrmUser.pas' {FrmUser},
+  uFrmStorage in 'forms\uFrmStorage.pas' {FrmStorage};
 
 {$R *.res}
 
@@ -27,8 +36,8 @@ begin
   Application.Initialize;
   Application.Title := 'Sistema de Controle de Armazenagem de Grãos';
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TFrmLogin, FrmLogin);
   Application.CreateForm(TFrmMain, FrmMain);
+  Application.CreateForm(TFrmStorage, FrmStorage);
   Application.Run;
 
 end.

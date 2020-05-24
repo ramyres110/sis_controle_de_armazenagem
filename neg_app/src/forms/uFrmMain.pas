@@ -8,7 +8,7 @@ uses
   FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys,
   FireDAC.Phys.IBBase,
   FireDAC.Phys.FB, Data.DB, FireDAC.Comp.Client, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, FireDAC.Comp.DataSet,
-  FireDAC.VCLUI.Wait, FireDAC.Comp.UI, uFrmLogin, uEntUser, uMdlUser;
+  FireDAC.VCLUI.Wait, FireDAC.Comp.UI, uFrmLogin, uEntUser, uMdlUser, uFrmUser, uFrmStorage;
 
 type
   TFrmMain = class(TForm)
@@ -68,6 +68,9 @@ type
     PnlFull: TPanel;
     Panel12: TPanel;
     LblUserInfo: TLabel;
+    N4: TMenuItem;
+    Usurio1: TMenuItem;
+    ArmazmSilo1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure RegistrodeProdutor1Click(Sender: TObject);
@@ -80,6 +83,8 @@ type
     procedure SpeedButton3Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure Usurio1Click(Sender: TObject);
+    procedure ArmazmSilo1Click(Sender: TObject);
   private
     { Private declarations }
     FUserLogged: TUser;
@@ -217,6 +222,26 @@ begin
   vPoint := SpeedButton3.ClientToScreen(Point(0, SpeedButton3.Height));
   PpMnOption.Popup(vPoint.X, vPoint.Y);
 
+end;
+
+procedure TFrmMain.Usurio1Click(Sender: TObject);
+begin
+  FrmUser := TFrmUser.Create(Self);
+  try
+    FrmUser.ShowModal();
+  finally
+    FrmUser.Free;
+  end;
+end;
+
+procedure TFrmMain.ArmazmSilo1Click(Sender: TObject);
+begin
+  FrmStorage := TFrmStorage.Create(Self);
+  try
+    FrmStorage.ShowModal();
+  finally
+    FrmStorage.Free;
+  end;
 end;
 
 procedure TFrmMain.BtnFilterDoneClick(Sender: TObject);

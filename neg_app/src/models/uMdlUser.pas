@@ -5,6 +5,7 @@ interface
 uses System.SysUtils, FireDAC.Comp.Client, uSrvDatabase, IdHashMessageDigest, uUtlCrypto, uEntUser;
 
 type
+
   TUserModel = class(TObject)
   private
     FUser: TUser;

@@ -140,6 +140,21 @@
             <Form>FrmLogin</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="utils\uUtlCrypto.pas"/>
+        <DCCReference Include="entities\uEntUser.pas"/>
+        <DCCReference Include="entities\uEntProducer.pas"/>
+        <DCCReference Include="entities\uEntGeneric.pas"/>
+        <DCCReference Include="entities\uEntGrain.pas"/>
+        <DCCReference Include="entities\uEntStorage.pas"/>
+        <DCCReference Include="entities\uEntContract.pas"/>
+        <DCCReference Include="forms\uFrmUser.pas">
+            <Form>FrmUser</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="forms\uFrmStorage.pas">
+            <Form>FrmStorage</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

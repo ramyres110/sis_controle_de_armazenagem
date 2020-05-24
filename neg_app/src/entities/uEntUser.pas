@@ -15,7 +15,6 @@ type
   public
     constructor Create;
     destructor Destrou;
-
     property id: Integer read FId write FId;
     property username: String read FUsername write FUsername;
     property password: String read FPassword write FPassword;
