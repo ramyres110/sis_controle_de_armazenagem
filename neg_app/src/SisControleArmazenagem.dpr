@@ -12,17 +12,23 @@ uses
   uMdlGrain in 'models\uMdlGrain.pas',
   uMdlProducer in 'models\uMdlProducer.pas',
   uSrvAPI in 'services\uSrvAPI.pas',
-  uSrvDatabase in 'services\uSrvDatabase.pas';
+  uSrvDatabase in 'services\uSrvDatabase.pas',
+  uMdlUser in 'models\uMdlUser.pas',
+  uMdlStorage in 'models\uMdlStorage.pas',
+  uFrmLogin in 'forms\uFrmLogin.pas' {FrmLogin};
 
 {$R *.res}
 
 begin
+{$IFDEF DEBUG}
+  ReportMemoryLeaksOnShutdown := DebugHook <> 0;
+{$ENDIF}
+
   Application.Initialize;
-  Application.Title := ':: Sistema de Controle de Armazenagem de Grãos ::';
+  Application.Title := 'Sistema de Controle de Armazenagem de Grãos';
   Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TFrmLogin, FrmLogin);
   Application.CreateForm(TFrmMain, FrmMain);
-  Application.CreateForm(TFrmManual, FrmManual);
-  Application.CreateForm(TFrmAbout, FrmAbout);
   Application.Run;
 
 end.
