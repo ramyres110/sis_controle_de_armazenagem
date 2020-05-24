@@ -11,6 +11,7 @@
     - database.bat
     - script_CREATE.sql
     - script_DDL.sql
+    - script_USER.sql _Cadastro de usuário default admin:admin_
 
 ## Execução
 - Executar clicando no arquivo database.bat
