@@ -67,3 +67,11 @@ __recovery/
 
 # Boss dependency manager vendor folder https://github.com/HashLoad/boss
 modules/
+
+# Workbench BKP Files 
+*.bak
+
+*.res
+/bin
+/data
+
