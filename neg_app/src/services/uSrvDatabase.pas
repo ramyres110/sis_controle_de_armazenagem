@@ -74,8 +74,7 @@ procedure TSrvDatabase.initDataSource(var ds: TDataSource; var qry: TFDQuery);
 begin
   if qry = nil then
   begin
-    qry := TFDQuery.Create(nil);
-    qry.connection := Self.FDConnection;
+    Self.initQuery(qry);
   end;
   ds := TDataSource.Create(nil);
   ds.DataSet := qry;
@@ -83,15 +82,9 @@ end;
 
 procedure TSrvDatabase.initQuery(var qry: TFDQuery);
 begin
-  if (qry <> nil) then
-    exit;
-  try
-    qry := TFDQuery.Create(nil);
-    qry.connection := Self.FDConnection;
-    qry.SQL.Clear;
-  except
-    raise;
-  end;
+  qry := TFDQuery.Create(nil);
+  qry.connection := Self.FDConnection;
+  qry.SQL.Clear;
 end;
 
 end.

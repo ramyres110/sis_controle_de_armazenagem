@@ -24,7 +24,10 @@ uses
   uEntStorage in 'entities\uEntStorage.pas',
   uEntContract in 'entities\uEntContract.pas',
   uFrmUser in 'forms\uFrmUser.pas' {FrmUser},
-  uFrmStorage in 'forms\uFrmStorage.pas' {FrmStorage};
+  uFrmStorage in 'forms\uFrmStorage.pas' {FrmStorage},
+  uUtlAlert in 'utils\uUtlAlert.pas',
+  uUtlGrid in 'utils\uUtlGrid.pas',
+  uUtlInputFields in 'utils\uUtlInputFields.pas';
 
 {$R *.res}
 
@@ -37,7 +40,6 @@ begin
   Application.Title := 'Sistema de Controle de Armazenagem de Grãos';
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TFrmMain, FrmMain);
-  Application.CreateForm(TFrmStorage, FrmStorage);
   Application.Run;
 
 end.

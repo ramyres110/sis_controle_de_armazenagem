@@ -8,7 +8,7 @@ uses
   FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys,
   FireDAC.Phys.IBBase,
   FireDAC.Phys.FB, Data.DB, FireDAC.Comp.Client, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, FireDAC.Comp.DataSet,
-  FireDAC.VCLUI.Wait, FireDAC.Comp.UI, uFrmLogin, uEntUser, uMdlUser, uFrmUser, uFrmStorage;
+  FireDAC.VCLUI.Wait, FireDAC.Comp.UI, uFrmLogin, uEntUser, uMdlUser, uFrmUser, uFrmStorage, uMdlContract, uEntContract;
 
 type
   TFrmMain = class(TForm)
@@ -27,8 +27,6 @@ type
     N3: TMenuItem;
     NovoContrato1: TMenuItem;
     GridPanel1: TGridPanel;
-    Panel2: TPanel;
-    SpeedButton2: TSpeedButton;
     ScrollBox1: TScrollBox;
     ScrollBox2: TScrollBox;
     ScrollBox3: TScrollBox;
@@ -71,6 +69,9 @@ type
     N4: TMenuItem;
     Usurio1: TMenuItem;
     ArmazmSilo1: TMenuItem;
+    Panel2: TPanel;
+    Label2: TLabel;
+    BtnNew: TButton;
     procedure FormCreate(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure RegistrodeProdutor1Click(Sender: TObject);
@@ -85,12 +86,16 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure Usurio1Click(Sender: TObject);
     procedure ArmazmSilo1Click(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure BtnNewClick(Sender: TObject);
   private
     { Private declarations }
     FUserLogged: TUser;
 
     procedure init;
     procedure loadUserInfo(AUserId: Integer);
+
+    procedure newContract;
   public
     { Public declarations }
     property userLogged: TUser read FUserLogged;
@@ -136,8 +141,8 @@ begin
     FrmLogin.ShowModal();
     if (FrmLogin.userLoggedId > 0) then
     begin
-      init();
       loadUserInfo(FrmLogin.userLoggedId);
+      init();
     end;
   finally
     if (FrmLogin.userLoggedId < 0) then
@@ -169,20 +174,27 @@ begin
   end;
 end;
 
-procedure TFrmMain.NovoContrato1Click(Sender: TObject);
+procedure TFrmMain.newContract;
 begin
   FrmContract := TFrmContract.Create(Self);
   try
+    FrmContract.Tag := 2; // Only Register
     FrmContract.ShowModal();
   finally
     FrmContract.Free;
   end;
 end;
 
+procedure TFrmMain.NovoContrato1Click(Sender: TObject);
+begin
+  Self.newContract;
+end;
+
 procedure TFrmMain.RegistrodeGros1Click(Sender: TObject);
 begin
   FrmGrain := TFrmGrain.Create(Self);
   try
+    FrmGrain.userLogged := FUserLogged;
     FrmGrain.ShowModal();
   finally
     FrmGrain.Free;
@@ -213,6 +225,11 @@ begin
   finally
     FrmAbout.Free;
   end;
+end;
+
+procedure TFrmMain.SpeedButton1Click(Sender: TObject);
+begin
+  Self.newContract;
 end;
 
 procedure TFrmMain.SpeedButton3Click(Sender: TObject);
@@ -250,6 +267,11 @@ var
 begin
   vPoint := BtnFilterDone.ClientToScreen(Point(0, BtnFilterDone.Height));
   PpMnFilter.Popup(vPoint.X, vPoint.Y);
+end;
+
+procedure TFrmMain.BtnNewClick(Sender: TObject);
+begin
+  Self.newContract;
 end;
 
 end.

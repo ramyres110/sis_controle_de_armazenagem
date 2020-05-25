@@ -11,7 +11,7 @@ object FrmUser: TFrmUser
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
-  Position = poDesktopCenter
+  Position = poMainFormCenter
   PixelsPerInch = 96
   TextHeight = 16
   object PnlFull: TPanel
@@ -30,8 +30,6 @@ object FrmUser: TFrmUser
     ParentBackground = False
     ParentFont = False
     TabOrder = 0
-    ExplicitWidth = 554
-    ExplicitHeight = 289
     object Panel1: TPanel
       Left = 1
       Top = 1
@@ -48,7 +46,6 @@ object FrmUser: TFrmUser
       ParentBackground = False
       ParentFont = False
       TabOrder = 0
-      ExplicitWidth = 552
     end
   end
 end

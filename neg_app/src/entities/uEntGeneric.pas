@@ -14,7 +14,7 @@ type
     FChangedAt: TDate;
   public
     constructor Create;
-    destructor Destroy;
+    destructor Destroy; override;
 
     property id: Integer read FId write FId;
     property createdBy: TUser read FCreatedBy write FCreatedBy;

@@ -20,173 +20,25 @@ object FrmMain: TFrmMain
   TextHeight = 16
   object PnlFull: TPanel
     Left = 0
-    Top = 0
+    Top = 48
     Width = 862
-    Height = 524
+    Height = 476
     Align = alClient
     BevelOuter = bvNone
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
     TabOrder = 0
-    object Panel2: TPanel
+    ExplicitTop = 0
+    ExplicitHeight = 524
+    object GridPanel1: TGridPanel
       Left = 0
       Top = 0
-      Width = 48
-      Height = 502
-      Align = alLeft
-      BevelOuter = bvNone
-      Color = clWindowFrame
-      ParentBackground = False
-      TabOrder = 0
-      object SpeedButton2: TSpeedButton
-        AlignWithMargins = True
-        Left = 3
-        Top = 3
-        Width = 42
-        Height = 42
-        Align = alTop
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        Glyph.Data = {
-          36100000424D3610000000000000360000002800000020000000200000000100
-          2000000000000010000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000004F000000E9000000E80000
-          004D000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000000000000EA000000FF000000FF0000
-          00E8000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000000000000FF000000FF000000FF0000
-          00FF000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000000000000FF000000FF000000FF0000
-          00FF000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000000000000FF000000FF000000FF0000
-          00FF000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000000000000FF000000FF000000FF0000
-          00FF000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000000000000FF000000FF000000FF0000
-          00FF000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000000000000FF000000FF000000FF0000
-          00FF000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000000000000FF000000FF000000FF0000
-          00FF000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000000000000FF000000FF000000FF0000
-          00FF000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000000000000FF000000FF000000FF0000
-          00FF000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000000000000FF000000FF000000FF0000
-          00FF000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          00000000004F000000E9000000FF000000FF000000FF000000FF000000FF0000
-          00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
-          00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
-          00FF000000FF000000FF000000E80000004D0000000000000000000000000000
-          0000000000EA000000FF000000FF000000FF000000FF000000FF000000FF0000
-          00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
-          00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
-          00FF000000FF000000FF000000FF000000E80000000000000000000000000000
-          0000000000E9000000FF000000FF000000FF000000FF000000FF000000FF0000
-          00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
-          00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
-          00FF000000FF000000FF000000FF000000E90000000000000000000000000000
-          000000000051000000E9000000FF000000FF000000FF000000FF000000FF0000
-          00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
-          00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
-          00FF000000FF000000FF000000EA0000004F0000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000000000000FF000000FF000000FF0000
-          00FF000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000000000000FF000000FF000000FF0000
-          00FF000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000000000000FF000000FF000000FF0000
-          00FF000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000000000000FF000000FF000000FF0000
-          00FF000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000000000000FF000000FF000000FF0000
-          00FF000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000000000000FF000000FF000000FF0000
-          00FF000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000000000000FF000000FF000000FF0000
-          00FF000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000000000000FF000000FF000000FF0000
-          00FF000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000000000000FF000000FF000000FF0000
-          00FF000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000000000000FF000000FF000000FF0000
-          00FF000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000000000000E9000000FF000000FF0000
-          00E9000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          00000000000000000000000000000000000000000051000000E9000000EA0000
-          004F000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000}
-        ParentFont = False
-      end
-    end
-    object GridPanel1: TGridPanel
-      Left = 48
-      Top = 0
-      Width = 814
-      Height = 502
+      Width = 862
+      Height = 454
       Align = alClient
       Color = clWhite
       ColumnCollection = <
@@ -282,12 +134,15 @@ object FrmMain: TFrmMain
           SizeStyle = ssAbsolute
           Value = 24.000000000000000000
         end>
-      TabOrder = 1
+      TabOrder = 0
+      ExplicitLeft = 48
+      ExplicitWidth = 814
+      ExplicitHeight = 502
       object ScrollBox1: TScrollBox
         Left = 1
         Top = 49
-        Width = 206
-        Height = 428
+        Width = 218
+        Height = 380
         Align = alClient
         BevelInner = bvNone
         BevelOuter = bvNone
@@ -301,11 +156,13 @@ object FrmMain: TFrmMain
         ParentColor = False
         ParentFont = False
         TabOrder = 0
+        ExplicitWidth = 206
+        ExplicitHeight = 428
         object Panel11: TPanel
           AlignWithMargins = True
           Left = 3
           Top = 3
-          Width = 200
+          Width = 212
           Height = 150
           Align = alTop
           AutoSize = True
@@ -320,11 +177,12 @@ object FrmMain: TFrmMain
           ParentBackground = False
           ParentFont = False
           TabOrder = 0
+          ExplicitWidth = 200
           object Label5: TLabel
             AlignWithMargins = True
             Left = 5
             Top = 59
-            Width = 190
+            Width = 202
             Height = 16
             Align = alTop
             Caption = 'GR'#195'O:'
@@ -334,7 +192,7 @@ object FrmMain: TFrmMain
             AlignWithMargins = True
             Left = 5
             Top = 37
-            Width = 190
+            Width = 202
             Height = 16
             Align = alTop
             Caption = 'PRODUTOR:'
@@ -343,13 +201,14 @@ object FrmMain: TFrmMain
           object Panel10: TPanel
             Left = 2
             Top = 2
-            Width = 196
+            Width = 208
             Height = 32
             Align = alTop
             BevelOuter = bvNone
             TabOrder = 0
+            ExplicitWidth = 196
             object SpeedButton3: TSpeedButton
-              Left = 164
+              Left = 176
               Top = 0
               Width = 32
               Height = 32
@@ -437,7 +296,7 @@ object FrmMain: TFrmMain
               AlignWithMargins = True
               Left = 3
               Top = 3
-              Width = 158
+              Width = 170
               Height = 26
               Align = alClient
               Caption = 'Cod. 4'
@@ -456,33 +315,35 @@ object FrmMain: TFrmMain
             AlignWithMargins = True
             Left = 5
             Top = 113
-            Width = 190
+            Width = 202
             Height = 32
             Align = alBottom
             Caption = 'Lan'#231'ar Peso 1'
             TabOrder = 1
+            ExplicitWidth = 190
           end
           object Edit1: TEdit
             AlignWithMargins = True
             Left = 5
             Top = 83
-            Width = 190
+            Width = 202
             Height = 24
             Align = alBottom
             TabOrder = 2
+            ExplicitWidth = 190
           end
         end
       end
       object ScrollBox2: TScrollBox
-        Left = 207
+        Left = 219
         Top = 49
-        Width = 200
-        Height = 428
+        Width = 212
+        Height = 380
         Align = alClient
         BevelInner = bvNone
         BevelOuter = bvNone
         BorderStyle = bsNone
-        Color = clInactiveBorder
+        Color = 14209987
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
@@ -491,17 +352,20 @@ object FrmMain: TFrmMain
         ParentColor = False
         ParentFont = False
         TabOrder = 1
+        ExplicitLeft = 207
+        ExplicitWidth = 200
+        ExplicitHeight = 428
       end
       object ScrollBox3: TScrollBox
-        Left = 407
+        Left = 431
         Top = 49
-        Width = 202
-        Height = 428
+        Width = 214
+        Height = 380
         Align = alClient
         BevelInner = bvNone
         BevelOuter = bvNone
         BorderStyle = bsNone
-        Color = clInfoBk
+        Color = 14149873
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
@@ -510,17 +374,20 @@ object FrmMain: TFrmMain
         ParentColor = False
         ParentFont = False
         TabOrder = 2
+        ExplicitLeft = 407
+        ExplicitWidth = 202
+        ExplicitHeight = 428
       end
       object ScrollBox4: TScrollBox
-        Left = 609
+        Left = 645
         Top = 49
-        Width = 204
-        Height = 428
+        Width = 216
+        Height = 380
         Align = alClient
         BevelInner = bvNone
         BevelOuter = bvNone
         BorderStyle = bsNone
-        Color = clMoneyGreen
+        Color = 9690068
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
@@ -529,11 +396,14 @@ object FrmMain: TFrmMain
         ParentColor = False
         ParentFont = False
         TabOrder = 3
+        ExplicitLeft = 609
+        ExplicitWidth = 204
+        ExplicitHeight = 428
         object Panel16: TPanel
           AlignWithMargins = True
           Left = 3
           Top = 3
-          Width = 198
+          Width = 210
           Height = 150
           Align = alTop
           BevelInner = bvRaised
@@ -547,11 +417,12 @@ object FrmMain: TFrmMain
           ParentBackground = False
           ParentFont = False
           TabOrder = 0
+          ExplicitWidth = 198
           object Label13: TLabel
             AlignWithMargins = True
             Left = 5
             Top = 81
-            Width = 188
+            Width = 200
             Height = 16
             Align = alTop
             Caption = 'Peso 2: 2tn'
@@ -561,7 +432,7 @@ object FrmMain: TFrmMain
             AlignWithMargins = True
             Left = 5
             Top = 37
-            Width = 188
+            Width = 200
             Height = 16
             Align = alTop
             Caption = 'Peso 1: 23tl'
@@ -571,7 +442,7 @@ object FrmMain: TFrmMain
             AlignWithMargins = True
             Left = 5
             Top = 59
-            Width = 188
+            Width = 200
             Height = 16
             Align = alTop
             Caption = 'Humidade: 3,2'
@@ -580,13 +451,14 @@ object FrmMain: TFrmMain
           object Panel17: TPanel
             Left = 2
             Top = 2
-            Width = 194
+            Width = 206
             Height = 32
             Align = alTop
             BevelOuter = bvNone
             TabOrder = 0
+            ExplicitWidth = 194
             object SpeedButton6: TSpeedButton
-              Left = 162
+              Left = 174
               Top = 0
               Width = 32
               Height = 32
@@ -673,7 +545,7 @@ object FrmMain: TFrmMain
               AlignWithMargins = True
               Left = 3
               Top = 3
-              Width = 156
+              Width = 168
               Height = 26
               Align = alClient
               Caption = 'Cod. 1'
@@ -693,7 +565,7 @@ object FrmMain: TFrmMain
       object Panel1: TPanel
         Left = 1
         Top = 1
-        Width = 206
+        Width = 218
         Height = 48
         Align = alClient
         BevelOuter = bvNone
@@ -707,16 +579,17 @@ object FrmMain: TFrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 4
+        ExplicitWidth = 206
       end
       object Panel3: TPanel
-        Left = 207
+        Left = 219
         Top = 1
-        Width = 200
+        Width = 212
         Height = 48
         Align = alClient
         BevelOuter = bvNone
         Caption = 'Humidade'
-        Color = clInactiveBorder
+        Color = 14209987
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -15
@@ -725,16 +598,18 @@ object FrmMain: TFrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 5
+        ExplicitLeft = 207
+        ExplicitWidth = 200
       end
       object Panel4: TPanel
-        Left = 407
+        Left = 431
         Top = 1
-        Width = 202
+        Width = 214
         Height = 48
         Align = alClient
         BevelOuter = bvNone
         Caption = 'Balan'#231'a 2'
-        Color = clInfoBk
+        Color = 14149873
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -15
@@ -743,16 +618,18 @@ object FrmMain: TFrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 6
+        ExplicitLeft = 407
+        ExplicitWidth = 202
       end
       object Panel5: TPanel
-        Left = 609
+        Left = 645
         Top = 1
-        Width = 204
+        Width = 216
         Height = 48
         Align = alClient
         BevelOuter = bvNone
         Caption = 'Finalizados'
-        Color = clMoneyGreen
+        Color = 9690068
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -15
@@ -761,11 +638,13 @@ object FrmMain: TFrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 7
+        ExplicitLeft = 609
+        ExplicitWidth = 204
         DesignSize = (
-          204
+          216
           48)
         object BtnFilterDone: TSpeedButton
-          Left = 169
+          Left = 181
           Top = 10
           Width = 32
           Height = 32
@@ -811,12 +690,12 @@ object FrmMain: TFrmMain
       end
       object Panel6: TPanel
         Left = 1
-        Top = 477
-        Width = 206
+        Top = 429
+        Width = 218
         Height = 24
         Align = alClient
         BevelOuter = bvNone
-        Caption = '0'
+        Caption = '1'
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -826,16 +705,18 @@ object FrmMain: TFrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 8
+        ExplicitTop = 477
+        ExplicitWidth = 206
       end
       object Panel7: TPanel
-        Left = 207
-        Top = 477
-        Width = 200
+        Left = 219
+        Top = 429
+        Width = 212
         Height = 24
         Align = alClient
         BevelOuter = bvNone
         Caption = '0'
-        Color = clInactiveBorder
+        Color = 14209987
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -12
@@ -844,16 +725,19 @@ object FrmMain: TFrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 9
+        ExplicitLeft = 207
+        ExplicitTop = 477
+        ExplicitWidth = 200
       end
       object Panel8: TPanel
-        Left = 407
-        Top = 477
-        Width = 202
+        Left = 431
+        Top = 429
+        Width = 214
         Height = 24
         Align = alClient
         BevelOuter = bvNone
         Caption = '0'
-        Color = clInfoBk
+        Color = 14149873
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -12
@@ -862,16 +746,19 @@ object FrmMain: TFrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 10
+        ExplicitLeft = 407
+        ExplicitTop = 477
+        ExplicitWidth = 202
       end
       object Panel9: TPanel
-        Left = 609
-        Top = 477
-        Width = 204
+        Left = 645
+        Top = 429
+        Width = 216
         Height = 24
         Align = alClient
         BevelOuter = bvNone
-        Caption = '0'
-        Color = clMoneyGreen
+        Caption = '1'
+        Color = 9690068
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -12
@@ -880,18 +767,22 @@ object FrmMain: TFrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 11
+        ExplicitLeft = 609
+        ExplicitTop = 477
+        ExplicitWidth = 204
       end
     end
     object Panel12: TPanel
       Left = 0
-      Top = 502
+      Top = 454
       Width = 862
       Height = 22
       Align = alBottom
       BevelOuter = bvNone
       Color = clWhite
       ParentBackground = False
-      TabOrder = 2
+      TabOrder = 1
+      ExplicitTop = 502
       object LblUserInfo: TLabel
         AlignWithMargins = True
         Left = 3
@@ -903,9 +794,61 @@ object FrmMain: TFrmMain
       end
     end
   end
+  object Panel2: TPanel
+    Left = 0
+    Top = 0
+    Width = 862
+    Height = 48
+    Align = alTop
+    BevelOuter = bvNone
+    Color = 2716773
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentBackground = False
+    ParentFont = False
+    TabOrder = 1
+    ExplicitLeft = 9
+    ExplicitTop = 9
+    ExplicitWidth = 582
+    DesignSize = (
+      862
+      48)
+    object Label2: TLabel
+      Left = 10
+      Top = 13
+      Width = 339
+      Height = 19
+      Caption = 'Sistema de Controle de Armazenagem de Gr'#227'os'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -16
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object BtnNew: TButton
+      Left = 753
+      Top = 8
+      Width = 100
+      Height = 34
+      Anchors = [akTop, akRight]
+      Caption = 'Novo Contrato'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 0
+      OnClick = BtnNewClick
+    end
+  end
   object MmMain: TMainMenu
-    Left = 152
-    Top = 216
+    Left = 168
+    Top = 320
     object Sistema1: TMenuItem
       Caption = 'Sistema'
       object NovoContrato1: TMenuItem
@@ -965,8 +908,8 @@ object FrmMain: TFrmMain
     end
   end
   object PpMnOption: TPopupMenu
-    Left = 88
-    Top = 248
+    Left = 32
+    Top = 320
     object Editar1: TMenuItem
       Caption = 'Editar'
     end
@@ -975,7 +918,7 @@ object FrmMain: TFrmMain
     end
   end
   object PpMnFilter: TPopupMenu
-    Left = 128
+    Left = 104
     Top = 320
     object btnFilterToday: TMenuItem
       AutoCheck = True
