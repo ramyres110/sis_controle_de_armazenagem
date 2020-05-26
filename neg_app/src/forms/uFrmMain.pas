@@ -205,6 +205,7 @@ procedure TFrmMain.RegistrodeProdutor1Click(Sender: TObject);
 begin
   FrmProducer := TFrmProducer.Create(Self);
   try
+    FrmProducer.userLogged := FUserLogged;
     FrmProducer.ShowModal();
   finally
     FrmProducer.Free;

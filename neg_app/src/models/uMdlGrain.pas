@@ -19,14 +19,12 @@ type
     procedure save;
     procedure update;
     procedure delete;
-
     procedure findAll(AQuery: string);
     procedure getById(AId: Integer);
+    procedure freeGrain;
 
     property qry: TFDQuery read FQry; // -Qry Select
     property ds: TDataSource read FDS;
-
-    procedure freeGrain;
     property grain: TGrain read FGrain write FGrain;
   end;
 
@@ -84,9 +82,9 @@ begin
   FreeAndNil(Self.FQry);
   FreeAndNil(Self.FDB);
 
-  if(FGrain <> nil)then
-    FreeAndNil(FGrain);
+  Self.freeGrain;
 
+  Inherited;
 end;
 
 procedure TGrainModel.findAll(AQuery: string);

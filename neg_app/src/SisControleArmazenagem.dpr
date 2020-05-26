@@ -27,7 +27,8 @@ uses
   uFrmStorage in 'forms\uFrmStorage.pas' {FrmStorage},
   uUtlAlert in 'utils\uUtlAlert.pas',
   uUtlGrid in 'utils\uUtlGrid.pas',
-  uUtlInputFields in 'utils\uUtlInputFields.pas';
+  uUtlInputFields in 'utils\uUtlInputFields.pas',
+  uUtlForm in 'utils\uUtlForm.pas';
 
 {$R *.res}
 

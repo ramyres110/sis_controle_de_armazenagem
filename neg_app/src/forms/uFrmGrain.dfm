@@ -14,8 +14,6 @@ object FrmGrain: TFrmGrain
   Position = poMainFormCenter
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  OnResize = FormResize
-  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 16
   object PnlFull: TPanel
@@ -74,7 +72,6 @@ object FrmGrain: TFrmGrain
         Anchors = [akTop, akRight]
         Caption = 'Novo'
         TabOrder = 0
-        OnClick = BtnNewClick
       end
     end
     object PgCtrl: TPageControl
@@ -128,7 +125,7 @@ object FrmGrain: TFrmGrain
             TabOrder = 0
             OnKeyPress = EdSearchKeyPress
           end
-          object BitBtn1: TBitBtn
+          object BtnSearch: TBitBtn
             Left = 482
             Top = 7
             Width = 83
@@ -136,7 +133,7 @@ object FrmGrain: TFrmGrain
             Anchors = [akTop, akRight]
             Caption = 'Pesquisar'
             TabOrder = 1
-            OnClick = BitBtn1Click
+            OnClick = BtnSearchClick
           end
         end
         object DBGrid: TDBGrid
@@ -221,9 +218,10 @@ object FrmGrain: TFrmGrain
           Width = 556
           Height = 24
           Anchors = [akLeft, akTop, akRight]
-          EditLabel.Width = 55
+          EditLabel.Width = 63
           EditLabel.Height = 16
-          EditLabel.Caption = 'Descri'#231#227'o'
+          EditLabel.Caption = 'Descri'#231#227'o*'
+          MaxLength = 255
           TabOrder = 0
         end
         object EdPrice: TLabeledEdit
@@ -231,9 +229,10 @@ object FrmGrain: TFrmGrain
           Top = 117
           Width = 160
           Height = 24
-          EditLabel.Width = 96
+          EditLabel.Width = 104
           EditLabel.Height = 16
-          EditLabel.Caption = 'Pre'#231'o ( R$ / Kg )'
+          EditLabel.Caption = 'Pre'#231'o ( R$ / Kg )*'
+          MaxLength = 10
           TabOrder = 1
         end
         object PnlControls: TPanel
@@ -266,7 +265,6 @@ object FrmGrain: TFrmGrain
             Align = alRight
             Caption = 'Cancelar'
             TabOrder = 1
-            OnClick = BtnCancelClick
           end
           object BtnSave: TButton
             AlignWithMargins = True

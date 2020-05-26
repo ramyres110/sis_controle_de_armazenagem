@@ -32,8 +32,6 @@ object FrmMain: TFrmMain
     Font.Style = []
     ParentFont = False
     TabOrder = 0
-    ExplicitTop = 0
-    ExplicitHeight = 524
     object GridPanel1: TGridPanel
       Left = 0
       Top = 0
@@ -135,9 +133,6 @@ object FrmMain: TFrmMain
           Value = 24.000000000000000000
         end>
       TabOrder = 0
-      ExplicitLeft = 48
-      ExplicitWidth = 814
-      ExplicitHeight = 502
       object ScrollBox1: TScrollBox
         Left = 1
         Top = 49
@@ -156,8 +151,6 @@ object FrmMain: TFrmMain
         ParentColor = False
         ParentFont = False
         TabOrder = 0
-        ExplicitWidth = 206
-        ExplicitHeight = 428
         object Panel11: TPanel
           AlignWithMargins = True
           Left = 3
@@ -177,7 +170,6 @@ object FrmMain: TFrmMain
           ParentBackground = False
           ParentFont = False
           TabOrder = 0
-          ExplicitWidth = 200
           object Label5: TLabel
             AlignWithMargins = True
             Left = 5
@@ -206,7 +198,6 @@ object FrmMain: TFrmMain
             Align = alTop
             BevelOuter = bvNone
             TabOrder = 0
-            ExplicitWidth = 196
             object SpeedButton3: TSpeedButton
               Left = 176
               Top = 0
@@ -320,7 +311,6 @@ object FrmMain: TFrmMain
             Align = alBottom
             Caption = 'Lan'#231'ar Peso 1'
             TabOrder = 1
-            ExplicitWidth = 190
           end
           object Edit1: TEdit
             AlignWithMargins = True
@@ -330,7 +320,6 @@ object FrmMain: TFrmMain
             Height = 24
             Align = alBottom
             TabOrder = 2
-            ExplicitWidth = 190
           end
         end
       end
@@ -352,9 +341,6 @@ object FrmMain: TFrmMain
         ParentColor = False
         ParentFont = False
         TabOrder = 1
-        ExplicitLeft = 207
-        ExplicitWidth = 200
-        ExplicitHeight = 428
       end
       object ScrollBox3: TScrollBox
         Left = 431
@@ -374,9 +360,6 @@ object FrmMain: TFrmMain
         ParentColor = False
         ParentFont = False
         TabOrder = 2
-        ExplicitLeft = 407
-        ExplicitWidth = 202
-        ExplicitHeight = 428
       end
       object ScrollBox4: TScrollBox
         Left = 645
@@ -396,9 +379,6 @@ object FrmMain: TFrmMain
         ParentColor = False
         ParentFont = False
         TabOrder = 3
-        ExplicitLeft = 609
-        ExplicitWidth = 204
-        ExplicitHeight = 428
         object Panel16: TPanel
           AlignWithMargins = True
           Left = 3
@@ -417,7 +397,6 @@ object FrmMain: TFrmMain
           ParentBackground = False
           ParentFont = False
           TabOrder = 0
-          ExplicitWidth = 198
           object Label13: TLabel
             AlignWithMargins = True
             Left = 5
@@ -456,7 +435,6 @@ object FrmMain: TFrmMain
             Align = alTop
             BevelOuter = bvNone
             TabOrder = 0
-            ExplicitWidth = 194
             object SpeedButton6: TSpeedButton
               Left = 174
               Top = 0
@@ -579,7 +557,6 @@ object FrmMain: TFrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 4
-        ExplicitWidth = 206
       end
       object Panel3: TPanel
         Left = 219
@@ -598,8 +575,6 @@ object FrmMain: TFrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 5
-        ExplicitLeft = 207
-        ExplicitWidth = 200
       end
       object Panel4: TPanel
         Left = 431
@@ -618,8 +593,6 @@ object FrmMain: TFrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 6
-        ExplicitLeft = 407
-        ExplicitWidth = 202
       end
       object Panel5: TPanel
         Left = 645
@@ -638,8 +611,6 @@ object FrmMain: TFrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 7
-        ExplicitLeft = 609
-        ExplicitWidth = 204
         DesignSize = (
           216
           48)
@@ -705,8 +676,6 @@ object FrmMain: TFrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 8
-        ExplicitTop = 477
-        ExplicitWidth = 206
       end
       object Panel7: TPanel
         Left = 219
@@ -725,9 +694,6 @@ object FrmMain: TFrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 9
-        ExplicitLeft = 207
-        ExplicitTop = 477
-        ExplicitWidth = 200
       end
       object Panel8: TPanel
         Left = 431
@@ -746,9 +712,6 @@ object FrmMain: TFrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 10
-        ExplicitLeft = 407
-        ExplicitTop = 477
-        ExplicitWidth = 202
       end
       object Panel9: TPanel
         Left = 645
@@ -767,9 +730,6 @@ object FrmMain: TFrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 11
-        ExplicitLeft = 609
-        ExplicitTop = 477
-        ExplicitWidth = 204
       end
     end
     object Panel12: TPanel
@@ -782,7 +742,6 @@ object FrmMain: TFrmMain
       Color = clWhite
       ParentBackground = False
       TabOrder = 1
-      ExplicitTop = 502
       object LblUserInfo: TLabel
         AlignWithMargins = True
         Left = 3
@@ -810,9 +769,6 @@ object FrmMain: TFrmMain
     ParentBackground = False
     ParentFont = False
     TabOrder = 1
-    ExplicitLeft = 9
-    ExplicitTop = 9
-    ExplicitWidth = 582
     DesignSize = (
       862
       48)
