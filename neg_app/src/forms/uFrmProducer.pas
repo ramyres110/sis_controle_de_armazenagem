@@ -58,6 +58,7 @@ uses
   uEntProducer, uEntUser;
 
 {$R *.dfm}
+{ TFrmProducer }
 
 procedure TFrmProducer.BtnSearchClick(Sender: TObject);
 begin
@@ -137,17 +138,15 @@ procedure TFrmProducer.FormCreate(Sender: TObject);
 begin
   FProducerModel := TProducerModel.Create;
   DBGrid.DataSource := Self.FProducerModel.ds;
+  Self.search;
 
   SetLength(FDinamicGridColumIndexes, 4);
-
   FDinamicGridColumIndexes[0] := 1; // name
   FDinamicGridColumIndexes[1] := 2; // doc
   FDinamicGridColumIndexes[2] := 3; // email
   FDinamicGridColumIndexes[3] := 4; // phone
 
   PrepareForm;
-
-  Self.search;
 end;
 
 procedure TFrmProducer.FormDestroy(Sender: TObject);

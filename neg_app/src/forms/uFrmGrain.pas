@@ -156,13 +156,12 @@ procedure TFrmGrain.FormCreate(Sender: TObject);
 begin
   Self.FGrainModel := TGrainModel.Create;
   DBGrid.DataSource := Self.FGrainModel.ds;
+  Self.search;
 
   SetLength(FDinamicGridColumIndexes,1);
   FDinamicGridColumIndexes[0] := 1;
 
   PrepareForm;
-
-  Self.search;
 end;
 
 procedure TFrmGrain.FormDestroy(Sender: TObject);

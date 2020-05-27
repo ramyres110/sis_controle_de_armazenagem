@@ -1,7 +1,7 @@
 object FrmProducer: TFrmProducer
   Left = 0
   Top = 0
-  Caption = 'FrmProducer'
+  Caption = 'Produtores'
   ClientHeight = 361
   ClientWidth = 584
   Color = clBtnFace
@@ -54,9 +54,9 @@ object FrmProducer: TFrmProducer
       object Label1: TLabel
         Left = 16
         Top = 13
-        Width = 62
+        Width = 77
         Height = 19
-        Caption = 'Produtor'
+        Caption = 'Produtores'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWhite
         Font.Height = -16
@@ -221,10 +221,6 @@ object FrmProducer: TFrmProducer
       object TbShAdd: TTabSheet
         Caption = 'Cadastro'
         ImageIndex = 1
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         DesignSize = (
           568
           274)

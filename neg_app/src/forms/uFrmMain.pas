@@ -246,6 +246,7 @@ procedure TFrmMain.Usurio1Click(Sender: TObject);
 begin
   FrmUser := TFrmUser.Create(Self);
   try
+    FrmUser.userLogged := FUserLogged;
     FrmUser.ShowModal();
   finally
     FrmUser.Free;
@@ -256,6 +257,7 @@ procedure TFrmMain.ArmazmSilo1Click(Sender: TObject);
 begin
   FrmStorage := TFrmStorage.Create(Self);
   try
+    FrmStorage.userLogged := FUserLogged;
     FrmStorage.ShowModal();
   finally
     FrmStorage.Free;
