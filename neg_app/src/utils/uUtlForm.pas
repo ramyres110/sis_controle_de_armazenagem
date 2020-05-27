@@ -214,6 +214,8 @@ var
   i: Integer;
   vComp: TComponent;
 begin
+  Self.Constraints.MinWidth := 600;
+  Self.Constraints.MinHeight := 400;
   Self.OnShow := Self.FormShow;
   Self.OnResize := Self.FormResize;
   for i := 0 to Self.ComponentCount - 1 do

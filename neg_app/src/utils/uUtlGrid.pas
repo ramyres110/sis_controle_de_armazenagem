@@ -63,6 +63,7 @@ begin
     vCurrIndex := AIndexOfResizeables[i];
     if (vCurrIndex < 0) or (vCurrIndex > (DBGrid.Columns.Count - 1)) then
       Continue;
+
     try
       if (DBGrid.Columns[vCurrIndex].Field.Tag = 0) then
         DBGrid.Columns[vCurrIndex].Field.Tag := DBGrid.Columns[vCurrIndex].Width;
