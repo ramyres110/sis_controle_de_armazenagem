@@ -2,7 +2,8 @@ unit uMdlProducer;
 
 interface
 
-uses uSrvDatabase, FireDAC.Comp.Client, Data.DB, uEntProducer;
+uses
+  System.SysUtils, FireDAC.Comp.Client, Data.DB, uSrvDatabase, uEntUser,uEntProducer;
 
 type
 
@@ -29,9 +30,6 @@ type
   end;
 
 implementation
-
-uses
-  System.SysUtils, uEntUser;
 
 const
   cFullSql = ''
@@ -103,7 +101,7 @@ begin
     +' OR UPPER(PR.DOCUMENT)LIKE UPPER('+ QuotedStr('%' + UpperCase(AQuery) + '%')+')'
     +' OR UPPER(PR.EMAIL)LIKE UPPER('+ QuotedStr('%' + UpperCase(AQuery) + '%')+')'
     +' OR UPPER(PR.PHONE)LIKE UPPER('+ QuotedStr('%' + UpperCase(AQuery) + '%')+')'
-    +' );';
+    +' ) ';
   end;
 
   vSql := vSql + ' ORDER BY PR."NAME", PR.ID ASC;';

@@ -2,7 +2,8 @@ unit uMdlGrain;
 
 interface
 
-uses uEntGrain, uSrvDatabase, FireDAC.Comp.Client, Data.DB;
+uses
+  System.SysUtils, FireDAC.Comp.Client, Data.DB, uSrvDatabase, uEntUser, uEntGrain;
 
 type
 
@@ -29,9 +30,6 @@ type
   end;
 
 implementation
-
-uses
-  System.SysUtils, uEntUser;
 
 const
   cFullSql = 'SELECT GR.ID, GR.DESCRIPTION, GR.PRICE_KG, '
