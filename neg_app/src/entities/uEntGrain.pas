@@ -9,10 +9,10 @@ type
   TGrain = class(TGeneric)
   private
     FDescription: string;
-    FPriceKG: Real;
+    FPriceKG: Double;
   public
     property description: string read FDescription write FDescription;
-    property priceKG: Real read FPriceKG write FPriceKG;
+    property priceKG: Double read FPriceKG write FPriceKG;
   end;
 
 implementation

@@ -45,6 +45,8 @@ begin
   begin
     FreeAndNil(Self.FChangedBy);
   end;
+
+  inherited;
 end;
 
 end.
