@@ -48,6 +48,8 @@ object FrmStorage: TFrmStorage
       ParentBackground = False
       ParentFont = False
       TabOrder = 0
+      ExplicitLeft = 2
+      ExplicitTop = -2
       DesignSize = (
         582
         48)
@@ -186,7 +188,7 @@ object FrmStorage: TFrmStorage
               Expanded = False
               FieldName = 'CHANGED_AT'
               Title.Caption = 'DTHR ULT. ALTERA'#199#195'O'
-              Width = 100
+              Width = 143
               Visible = True
             end
             item

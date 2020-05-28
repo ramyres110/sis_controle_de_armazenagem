@@ -114,6 +114,7 @@ procedure TFrmMain.Contratos1Click(Sender: TObject);
 begin
   FrmContract := TFrmContract.Create(Self);
   try
+    FrmContract.userLogged := FUserLogged;
     FrmContract.ShowModal();
   finally
     FrmContract.Free;
@@ -179,6 +180,7 @@ begin
   FrmContract := TFrmContract.Create(Self);
   try
     FrmContract.Tag := 2; // Only Register
+    FrmContract.userLogged := FUserLogged;
     FrmContract.ShowModal();
   finally
     FrmContract.Free;
