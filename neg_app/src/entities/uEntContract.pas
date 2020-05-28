@@ -47,7 +47,6 @@ type
     property finalWeightedBy: TUser read FFinalWeightedBy write FFinalWeightedBy;
     property finalWeightedAt: TDate read FFinalWeightedAt write FFinalWeightedAt;
 
-
     property isValidated: Boolean read FIsValidated write FIsValidated;
     property validatedBy: String read FValidatedBy write FValidatedBy;
     property validatedAt: TDate read FValidatedAt write FValidatedAt;

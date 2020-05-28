@@ -159,6 +159,7 @@
         <DCCReference Include="utils\uUtlGrid.pas"/>
         <DCCReference Include="utils\uUtlInputFields.pas"/>
         <DCCReference Include="utils\uUtlForm.pas"/>
+        <DCCReference Include="utils\uUtlCalculator.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

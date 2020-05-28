@@ -28,7 +28,8 @@ uses
   uUtlAlert in 'utils\uUtlAlert.pas',
   uUtlGrid in 'utils\uUtlGrid.pas',
   uUtlInputFields in 'utils\uUtlInputFields.pas',
-  uUtlForm in 'utils\uUtlForm.pas';
+  uUtlForm in 'utils\uUtlForm.pas',
+  uUtlCalculator in 'utils\uUtlCalculator.pas';
 
 {$R *.res}
 
