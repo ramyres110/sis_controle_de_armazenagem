@@ -7,6 +7,7 @@ uses
   Vcl.Forms, Vcl.Controls, Vcl.ComCtrls, Vcl.Graphics, uUtlGrid, uEntUser;
 
 type
+  TNotifyNewClick = procedure(Sender: TObject) of object;
 
   TGenericForm = class(TForm)
   private
@@ -14,6 +15,7 @@ type
     procedure FormResize(Sender: TObject);
     procedure BtnNewClick(Sender: TObject);
     procedure BtnCancelClick(Sender: TObject);
+
   protected
     FUserLogged: TUser;
     FDinamicGridColumIndexes: Array of Integer;
@@ -28,22 +30,33 @@ type
 
     procedure PrepareForm;
   public
+    onNewClick: TNotifyNewClick;
+
     property userLogged: TUser read FUserLogged write FUserLogged;
   end;
 
 implementation
 
-{ TGenericForm }
+  { TGenericForm }
 
 procedure TGenericForm.BtnCancelClick(Sender: TObject);
 begin
+  if(Self.Tag = 2)then
+  begin
+    Close;
+    Exit;
+  end;
+
   Self.GoToSearch(nil);
   Self.ClearAllEdits;
 end;
 
 procedure TGenericForm.BtnNewClick(Sender: TObject);
 begin
+  Self.Tag := 0;
   GoToNew(nil);
+  if (Assigned(onNewClick)) then
+    onNewClick(Sender);
 end;
 
 procedure TGenericForm.ClearAllEdits;
@@ -90,10 +103,15 @@ end;
 
 procedure TGenericForm.FormShow(Sender: TObject);
 begin
-  Self.GoToSearch(nil);
-  Self.ClearAllEdits;
   if Self.FUserLogged = nil then
     Self.Close;
+
+  Self.ClearAllEdits;
+  if (Self.Tag = 2) then
+    Self.GoToNew(nil)
+  else
+    Self.GoToSearch(nil);
+
 end;
 
 procedure TGenericForm.GoToEdit(const AComponentToFocus: TWinControl);
@@ -131,7 +149,6 @@ var
   vComp: TComponent;
   vTabAdd: TTabSheet;
 begin
-  Self.Tag := 0;
   vTabAdd := nil;
   for i := 0 to Self.ComponentCount - 1 do
   begin
