@@ -57,6 +57,7 @@ begin
       Add('Database=' + vDatabasePath);
       Add('User_Name=sysdba');
       Add('Password=masterkey');
+      Add('CharacterSet=UTF8');;
     end;
   end;
 
