@@ -3,7 +3,8 @@ unit uMdlProducer;
 interface
 
 uses
-  System.SysUtils, FireDAC.Comp.Client, Data.DB, uSrvDatabase, uEntUser,uEntProducer;
+  System.SysUtils, FireDAC.Comp.Client, Data.DB, uSrvDatabase, uEntUser,uEntProducer,
+  System.Generics.Collections;
 
 type
 
@@ -27,6 +28,8 @@ type
     property qry: TFDQuery read FQry; // -Qry Select
     property ds: TDataSource read FDS;
     property producer: TProducer read FProducer write FProducer;
+
+    class procedure loadList(var AList:TObjectList<TProducer>);
   end;
 
 implementation
@@ -156,6 +159,55 @@ begin
   end;
 end;
 
+class procedure TProducerModel.loadList(var AList: TObjectList<TProducer>);
+var
+  vQry: TFDQuery;
+  vMdl: TProducerModel;
+  vAuxObj: TProducer;
+begin
+  if(AList = nil)then
+    raise Exception.Create('List must be created before');
+
+  vMdl := TProducerModel.Create;
+  vMdl.FDB.initQuery(vQry);
+  try
+    vQry.sql.Text := 'SELECT ID, "NAME", DOCUMENT, PHONE, EMAIL, CREATED_BY, CREATED_AT, CHANGED_BY, CHANGED_AT FROM TB_PRODUCERS ORDER BY "NAME";';
+    try
+      vQry.Open;
+      if not vQry.IsEmpty then
+      begin
+        while not vQry.Eof do
+        begin
+          vAuxObj := TProducer.Create;
+          vAuxObj.id := vQry.FieldByName('ID').AsInteger;
+          vAuxObj.name := vQry.FieldByName('NAME').AsString;
+          vAuxObj.document := vQry.FieldByName('DOCUMENT').AsString;
+          vAuxObj.phone := vQry.FieldByName('PHONE').AsString;
+          vAuxObj.email := vQry.FieldByName('EMAIL').AsString;
+
+          vAuxObj.createdAt := vQry.FieldByName('CREATED_AT').AsDateTime;
+          vAuxObj.changedAt := vQry.FieldByName('CHANGED_AT').AsDateTime;
+
+          vAuxObj.createdBy := TUser.Create;
+          vAuxObj.createdBy.id := vQry.FieldByName('CREATED_BY').AsInteger;
+
+          vAuxObj.changedBy := TUser.Create;
+          vAuxObj.changedBy.id := vQry.FieldByName('CHANGED_BY').AsInteger;
+
+          AList.Add(vAuxObj);
+          vQry.Next;
+        end;
+      end;
+    except
+      on E: Exception do
+        raise E;
+    end;
+  finally
+    FreeAndNil(vQry);
+    FreeAndNil(vMdl);
+  end;
+end;
+
 procedure TProducerModel.save;
 var
   vQry: TFDQuery;
@@ -197,7 +249,7 @@ begin
     +' PHONE = :PHONE,'
     +' EMAIL = :EMAIL,'
     +' CHANGED_BY = :CHANGED_BY,'
-    +' CHANGED_AT = CURRENT_TIMESTAP'
+    +' CHANGED_AT = CURRENT_TIMESTAMP'
     +' WHERE ID = :ID;';
     vQry.ParamByName('ID').AsInteger := FProducer.id;
     vQry.ParamByName('NAME').AsString := FProducer.name;

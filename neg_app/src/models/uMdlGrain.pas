@@ -3,7 +3,8 @@ unit uMdlGrain;
 interface
 
 uses
-  System.SysUtils, FireDAC.Comp.Client, Data.DB, uSrvDatabase, uEntUser, uEntGrain;
+  System.SysUtils, FireDAC.Comp.Client, Data.DB, uSrvDatabase, uEntUser, uEntGrain,
+  System.Generics.Collections;
 
 type
 
@@ -27,6 +28,9 @@ type
     property qry: TFDQuery read FQry; // -Qry Select
     property ds: TDataSource read FDS;
     property grain: TGrain read FGrain write FGrain;
+
+    class procedure loadList(var AList:TObjectList<TGrain>);
+    class function getPriceById(AId:Integer):Double;
   end;
 
 implementation
@@ -147,6 +151,80 @@ begin
     end;
   finally
     FreeAndNil(vQry);
+  end;
+end;
+
+class function TGrainModel.getPriceById(AId: Integer): Double;
+var
+  vQry: TFDQuery;
+  vMdl: TGrainModel;
+begin
+  Result := 0;
+  vMdl := TGrainModel.Create;
+  vMdl.FDB.initQuery(vQry);
+  try
+    vQry.sql.Text := 'SELECT PRICE_KG FROM TB_GRAINS WHERE ID = :ID;';
+    vQry.ParamByName('ID').AsInteger := AId;
+    try
+      vQry.Open;
+      if not vQry.IsEmpty then
+      begin
+        Result := vQry.FieldByName('PRICE_KG').AsFloat;
+      end;
+    except
+      on E: Exception do
+        raise E;
+    end;
+  finally
+    FreeAndNil(vQry);
+    FreeAndNil(vMdl);
+  end;
+end;
+
+class procedure TGrainModel.loadList(var AList: TObjectList<TGrain>);
+var
+  vQry: TFDQuery;
+  vMdl: TGrainModel;
+  vAuxObj: TGrain;
+begin
+  if(AList = nil)then
+    raise Exception.Create('List must be created before');
+
+  vMdl := TGrainModel.Create;
+  vMdl.FDB.initQuery(vQry);
+  try
+    vQry.sql.Text := 'SELECT ID, DESCRIPTION, PRICE_KG, CREATED_BY, CREATED_AT, CHANGED_BY, CHANGED_AT FROM TB_GRAINS ORDER BY DESCRIPTION;';
+    try
+      vQry.Open;
+      if not vQry.IsEmpty then
+      begin
+        while not vQry.Eof do
+        begin
+          vAuxObj := TGrain.Create;
+          vAuxObj.id := vQry.FieldByName('ID').AsInteger;
+          vAuxObj.description := vQry.FieldByName('DESCRIPTION').AsString;
+          vAuxObj.priceKG := vQry.FieldByName('PRICE_KG').AsFloat;
+
+          vAuxObj.createdAt := vQry.FieldByName('CREATED_AT').AsDateTime;
+          vAuxObj.changedAt := vQry.FieldByName('CHANGED_AT').AsDateTime;
+
+          vAuxObj.createdBy := TUser.Create;
+          vAuxObj.createdBy.id := vQry.FieldByName('CREATED_BY').AsInteger;
+
+          vAuxObj.changedBy := TUser.Create;
+          vAuxObj.changedBy.id := vQry.FieldByName('CHANGED_BY').AsInteger;
+
+          AList.Add(vAuxObj);
+          vQry.Next;
+        end;
+      end;
+    except
+      on E: Exception do
+        raise E;
+    end;
+  finally
+    FreeAndNil(vQry);
+    FreeAndNil(vMdl);
   end;
 end;
 

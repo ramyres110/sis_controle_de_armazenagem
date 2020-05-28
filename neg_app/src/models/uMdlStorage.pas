@@ -3,7 +3,8 @@ unit uMdlStorage;
 interface
 
 uses
-  System.SysUtils, FireDAC.Comp.Client, Data.DB, uSrvDatabase, uEntUser, uEntStorage;
+  System.SysUtils, FireDAC.Comp.Client, Data.DB, uSrvDatabase, uEntUser, uEntStorage,
+  System.Classes, System.Generics.Collections;
 
 type
 
@@ -27,6 +28,8 @@ type
     property qry: TFDQuery read FQry; // -Qry Select
     property ds: TDataSource read FDS;
     property storage: TStorage read FStorage write FStorage;
+
+    class procedure loadList(var AList:TObjectList<TStorage>);
   end;
 
 implementation
@@ -145,6 +148,53 @@ begin
     end;
   finally
     FreeAndNil(vQry);
+  end;
+end;
+
+class procedure TStorageModel.loadList(var AList: TObjectList<TStorage>);
+var
+  vQry: TFDQuery;
+  vMdl: TStorageModel;
+  vAuxObj: TStorage;
+begin
+  if(AList = nil)then
+    raise Exception.Create('List must be created before');
+
+  vMdl := TStorageModel.Create;
+  vMdl.FDB.initQuery(vQry);
+  try
+    vQry.sql.Text := 'SELECT ID, "NAME", CREATED_BY, CREATED_AT, CHANGED_BY, CHANGED_AT FROM TB_STORAGES ORDER BY "NAME";';
+    try
+      vQry.Open;
+      if not vQry.IsEmpty then
+      begin
+        while not vQry.Eof do
+        begin
+          vAuxObj := TStorage.Create;
+
+          vAuxObj.id := vQry.FieldByName('ID').AsInteger;
+          vAuxObj.name := vQry.FieldByName('NAME').AsString;
+
+          vAuxObj.createdAt := vQry.FieldByName('CREATED_AT').AsDateTime;
+          vAuxObj.changedAt := vQry.FieldByName('CHANGED_AT').AsDateTime;
+
+          vAuxObj.createdBy := TUser.Create;
+          vAuxObj.createdBy.id := vQry.FieldByName('CREATED_BY').AsInteger;
+
+          vAuxObj.changedBy := TUser.Create;
+          vAuxObj.changedBy.id := vQry.FieldByName('CHANGED_BY').AsInteger;
+
+          AList.Add(vAuxObj);
+          vQry.Next;
+        end;
+      end;
+    except
+      on E: Exception do
+        raise E;
+    end;
+  finally
+    FreeAndNil(vQry);
+    FreeAndNil(vMdl);
   end;
 end;
 

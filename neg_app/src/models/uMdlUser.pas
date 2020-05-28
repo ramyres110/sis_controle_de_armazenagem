@@ -3,7 +3,8 @@ unit uMdlUser;
 interface
 
 uses
-  System.SysUtils, FireDAC.Comp.Client, Data.DB, uSrvDatabase, uEntUser, uUtlCrypto;
+  System.SysUtils, FireDAC.Comp.Client, Data.DB, uSrvDatabase, uEntUser, uUtlCrypto,
+  System.Generics.Collections;
 
 type
 
@@ -30,6 +31,8 @@ type
 
     class procedure loadUserById(AId:Integer; var AUser: TUSer);
     class function validateLogin(username: string; password: string): Integer;
+
+    class procedure loadList(var AList:TObjectList<TUser>);
   end;
 
 implementation
@@ -148,6 +151,51 @@ begin
     end;
   finally
     FreeAndNil(vQry);
+  end;
+end;
+
+class procedure TUserModel.loadList(var AList: TObjectList<TUser>);
+var
+  vQry: TFDQuery;
+  vMdl: TUserModel;
+  vAuxObj: TUser;
+begin
+  if(AList = nil)then
+    raise Exception.Create('List must be created before');
+
+  vMdl := TUserModel.Create;
+  vMdl.FDB.initQuery(vQry);
+  try
+    vQry.sql.Text := 'SELECT ID, USERNAME, CREATED_BY, CREATED_AT, CHANGED_BY, CHANGED_AT FROM TB_USERS ORDER BY USERNAME;';
+    try
+      vQry.Open;
+      if not vQry.IsEmpty then
+      begin
+        while not vQry.Eof do
+        begin
+          vAuxObj := TUser.Create;
+          vAuxObj.id := vQry.FieldByName('ID').AsInteger;
+          vAuxObj.username := vQry.FieldByName('USERNAME').AsString;
+          vAuxObj.createdAt := vQry.FieldByName('CREATED_AT').AsDateTime;
+          vAuxObj.changedAt := vQry.FieldByName('CHANGED_AT').AsDateTime;
+
+          vAuxObj.createdBy := TUser.Create;
+          vAuxObj.createdBy.id := vQry.FieldByName('CREATED_BY').AsInteger;
+
+          vAuxObj.changedBy := TUser.Create;
+          vAuxObj.changedBy.id := vQry.FieldByName('CHANGED_BY').AsInteger;
+
+          AList.Add(vAuxObj);
+          vQry.Next;
+        end;
+      end;
+    except
+      on E: Exception do
+        raise E;
+    end;
+  finally
+    FreeAndNil(vQry);
+    FreeAndNil(vMdl);
   end;
 end;
 
