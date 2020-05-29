@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 const Promise = require('bluebird');
 const Firebird = require('node-firebird');
 
@@ -45,16 +46,23 @@ const validateSQL = (sql) => {
  * Create Database
  * @param {object} options - Extra Options
  */
-const createDatabase = (options) => {
+const createDatabase = (options = {}, force = false) => {
     const opt = { ...getOptions(), ...options };
+    if (!!fs.existsSync(opt.database) && !force) {
+        console.info('Database already exits');
+        return Promise.resolve(true);
+    }
+    console.info('Creating Database');
     return new Promise((res, rej) => {
         Firebird.create(opt, (err, db) => {
             if (err) {
+                console.error(err);
                 return rej(err);
             }
+            console.info('Database Created');
             db.detach();
             return res(true);
-        })
+        });
     });
 }
 

@@ -7,5 +7,10 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'bin'),
         filename: 'server.js'
+    },
+    node: {
+        global: false,
+        __filename: false,
+        __dirname: false,
     }
 };

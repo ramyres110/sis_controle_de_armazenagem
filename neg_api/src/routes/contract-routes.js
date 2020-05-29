@@ -1,41 +1,72 @@
 const express = require('express');
-const ContractModel = require('../models/contract-model');
+const ContractModel = require('../models/contract-Loki-model');
 
 const router = express.Router();
 
-ContractModel.sync();
+const handleResult = (req, res, {status, result}) => {
+    if (!result & !status) {
+        throw new Error('Result Not Found');
+    }
+    return res
+        .status(status)
+        .json(result)
+        .end();
+}
 
-router.get('/', function (req, res) {
+const handleError = (req, res, err) => {
+    return res
+        .status(500)
+        .json(err)
+        .end();
+}
+
+router.get('/produtor/:document', function (req, res) {
     return ContractModel
-        .findAll()
-        .then(result => {
-            return res
-                .status(200)
-                .json(result)
-                .end();
-        })
-        .catch(err => {
-            return res
-                .status(500)
-                .json(err)
-                .end();
-        })
+        .findByProducer(req.params.document)
+        .then(result => handleResult(req, res, result))
+        .catch(err => handleError(req, res, err));
 });
 
 router.get('/:id', function (req, res) {
-    res.json({}).end();
+    return ContractModel
+        .findById(req.params.id)
+        .then(result => handleResult(req, res, result))
+        .catch(err => handleError(req, res, err));
+});
+
+router.get('/', function (req, res) {
+    return ContractModel
+        .findAll(req.query)
+        .then(result => handleResult(req, res, result))
+        .catch(err => handleError(req, res, err));
+});
+
+router.post('/:id/valida', function (req, res) {
+    return ContractModel
+        .validate(req.params.id, req.body)
+        .then(result => handleResult(req, res, result))
+        .catch(err => handleError(req, res, err));
 });
 
 router.post('/', function (req, res) {
-    res.json({}).end();
+    return ContractModel
+        .create(req.body)
+        .then(result => handleResult(req, res, result))
+        .catch(err => handleError(req, res, err));
 });
 
 router.put('/:id', function (req, res) {
-    res.json({}).end();
+    return ContractModel
+        .update(req.params.id, req.body)
+        .then(result => handleResult(req, res, result))
+        .catch(err => handleError(req, res, err));
 });
 
 router.delete('/:id', function (req, res) {
-    res.json({}).end();
+    return ContractModel
+        .delete(req.params.id)
+        .then(result => handleResult(req, res, result))
+        .catch(err => handleError(req, res, err));
 });
 
 module.exports = router;

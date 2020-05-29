@@ -1,5 +1,5 @@
 const should = require('should');
-const ContractModel = require('../models/contract-model');
+const ContractModel = require('../models/contract-FB-model');
 
 describe("CONTRACT MODEL TEST", () => {
     context("Class Methods", () => {

@@ -5,7 +5,7 @@
 ## Pré Requisitos
 - Node v10.16 ou superior
 - NPM  v6.9.0 ou superior
-- Firebird 2.1
+- ~~Firebird 2.1~~ (Alterado para armazenamento com LokiJs)
 
 ## Configuração
 - Pode ser configurado pelas variáveis de ambiente ou
@@ -28,5 +28,4 @@ FB_DATABASE=
 1. Para executar em produção, execute: `npm start`
 1. Para executar em desenvolvimento, execute: `npm run dev`
 1. Para deploy é necessário apenas a pasta `bin` e a `data`
-1. 
 

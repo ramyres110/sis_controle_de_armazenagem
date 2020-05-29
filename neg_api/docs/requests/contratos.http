@@ -5,33 +5,123 @@
 ### Vars
 @host=http://localhost:3000
 @path=/api/v1
-@id=1
+@document={{getLastContract.response.body.producer.document}}
+@uid = {{getLastContract.response.body.id}}
 
-### GET 
+### GET - ALL CONTRACTS
 GET {{host}}{{path}}/contratos
 
-### GET BY ID
-GET {{host}}{{path}}/contratos/{{id}}
 
-### POST - Novo Contrato
+### GET - CONTRACT BY ID
+GET {{host}}{{path}}/contratos/{{uid}}
+
+
+### GET - CONTRACT BY PROCUCER DOCUMENT
+GET {{host}}{{path}}/contratos/produtor/{{document}}
+
+
+### POST - SAVE CONTRACT
+# @name getLastContract
 POST {{host}}{{path}}/contrato
 Content-Type: application/json
 
-{}
+{
+    "storage": {
+        "name": "Armazém",
+        "id": 1,
+        "createdAt": 0,
+        "changedAt": 0
+    },
+    "producer": {
+        "name": "Fazenda Veneza",
+        "document": "321",
+        "phone": "32156478",
+        "email": "faz@veneza.com",
+        "id": 1,
+        "createdAt": 43980.6145023148,
+        "changedAt": 43980.6145023148
+    },
+    "grain": {
+        "description": "Soja",
+        "priceKG": 0.109999999403954,
+        "id": 2,
+        "createdAt": 0,
+        "changedAt": 0
+    },
+    "initialWeight": 0,
+    "initialWeightedAt": 0,
+    "moisturePercent": 0,
+    "moistureAt": 0,
+    "finalWeight": 0,
+    "finalWeightedAt": 0,
+    "validatedAt": 0,
+    "id": 13,
+    "createdBy": {
+        "id": 1,
+        "username": "admin",
+        "createdAt": 0,
+        "changedAt": 0
+    },
+    "createdAt": 0,
+    "changedAt": 0
+}
 
-### POST - Valida Contrato
-POST {{host}}{{path}}/contrato/{{id}}/valida
+
+### POST - VALIDATE CONTRACT
+POST {{host}}{{path}}/contrato/{{uid}}/valida
 Content-Type: application/json
 
-{}
+{
+    "isValidated": true,
+    "validatedBy": "Fulano de Tal"
+}
 
-### PUT
-PUT {{host}}{{path}}/contrato/{{id}}
+
+### PUT - ALTER CONTRACT
+PUT {{host}}{{path}}/contrato/{{uid}}
 Content-Type: application/json
 
-{}
+{
+    "storage": {
+        "name": "Armazém as dfasd f",
+        "id": 1,
+        "createdAt": 0,
+        "changedAt": 0
+    },
+    "producer": {
+        "name": "Fazenda Veneza asdf sadf ",
+        "document": "321",
+        "phone": "32156478",
+        "email": "faz@veneza.com",
+        "id": 1,
+        "createdAt": 43980.6145023148,
+        "changedAt": 43980.6145023148
+    },
+    "grain": {
+        "description": "Soja sadf sad fsad f",
+        "priceKG": 0.109999999403954,
+        "id": 2,
+        "createdAt": 0,
+        "changedAt": 0
+    },
+    "initialWeight": 0,
+    "initialWeightedAt": 0,
+    "moisturePercent": 0,
+    "moistureAt": 0,
+    "finalWeight": 0,
+    "finalWeightedAt": 0,
+    "validatedAt": 0,
+    "createdBy": {
+        "id": 1,
+        "username": "admin",
+        "createdAt": 0,
+        "changedAt": 0
+    },
+    "createdAt": 0,
+    "changedAt": 0
+}
 
-### DELETE
-DELETE {{host}}{{path}}/contrato/{{id}}
+### DELETE - DROP CONTRACT
+DELETE {{host}}{{path}}/contrato/{{uid}}
 Content-Type: application/json
 

@@ -19,9 +19,9 @@ app.use(cors());
 app.use(morgan('combined'));
 app.use(bodyParser.json());
 
-app.use('/api/v1/contratos', contratoRoute);
+app.use('/api/v1/contratos?', contratoRoute);
 
-app.use((err, req, res, next) => {
+app.use((err, req, res, next) => {//next to handler error
     console.error(err);
     return res
         .status(500)

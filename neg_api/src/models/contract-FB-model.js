@@ -1,5 +1,5 @@
 const Promise = require('bluebird');
-const database = require('../utils/database-utils');
+const database = require('../utils/database-FB-utils');
 
 const tableName = 'TB_CONTRACTS';
 const tableAttrPk = 'ID';
@@ -141,9 +141,9 @@ ContractModel.findAll = (query) => {
     let formatedQuery = "";
     let limit = "10000";
     let offset = "0";
-    if (!!query) {
-        //TODO:
-    }
+    // if (!!query) {
+    //     //TODO:
+    // }
     const sql = `SELECT FIRST ${limit} SKIP ${offset} * FROM ${tableName} ${formatedQuery};`;
     return database
         .query(sql)
@@ -171,5 +171,17 @@ ContractModel.findById = (id) => {
             return contract;
         });
 }
+
+ContractModel.create = (obj) => {
+    throw new Error('Dont implemented');
+ };
+
+ContractModel.update = (id, obj) => { 
+    throw new Error('Dont implemented');
+};
+
+ContractModel.delete = (id) => { 
+    throw new Error('Dont implemented');
+};
 
 module.exports = ContractModel;

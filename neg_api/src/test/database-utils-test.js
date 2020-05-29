@@ -1,7 +1,7 @@
 const path = require('path');
 const should = require('should');
 
-const database = require('../utils/database-utils');
+const database = require('../utils/database-FB-utils');
 
 describe("DATABASE UTILS TEST", () => {
 

@@ -12,8 +12,8 @@
     "test": "mocha src/test",
     "test-watch": "mocha src/test -w",
     "build": "npm run lint & npm run webpack",
-    "webpack":"webpack",
-    "lint":"eslint --ignore-pattern src/test/** src/**/*.js"
+    "webpack": "webpack",
+    "lint": "eslint --ignore-pattern src/test/** src/**/*.js"
   },
   "keywords": [],
   "author": "Ramyres110 <ramyres90@gmail.com>",
@@ -33,7 +33,9 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "helmet": "^3.22.0",
+    "lokijs": "^1.5.8",
     "morgan": "^1.10.0",
-    "node-firebird": "^0.9.0"
+    "node-firebird": "^0.9.0",
+    "uid": "^1.0.0"
   }
 }
