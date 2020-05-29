@@ -1,0 +1,37 @@
+### Requisições para a Rota de Contratos
+### author: Ramyres Aquino @ramyres110
+### Dt: 23/05/2020
+
+### Vars
+@host=http://localhost:3000
+@path=/api/v1
+@id=1
+
+### GET 
+GET {{host}}{{path}}/contratos
+
+### GET BY ID
+GET {{host}}{{path}}/contratos/{{id}}
+
+### POST - Novo Contrato
+POST {{host}}{{path}}/contrato
+Content-Type: application/json
+
+{}
+
+### POST - Valida Contrato
+POST {{host}}{{path}}/contrato/{{id}}/valida
+Content-Type: application/json
+
+{}
+
+### PUT
+PUT {{host}}{{path}}/contrato/{{id}}
+Content-Type: application/json
+
+{}
+
+### DELETE
+DELETE {{host}}{{path}}/contrato/{{id}}
+Content-Type: application/json
+
