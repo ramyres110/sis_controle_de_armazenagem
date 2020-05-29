@@ -11,7 +11,8 @@
     "dev": "nodemon src/index.js",
     "test": "mocha src/test",
     "test-watch": "mocha src/test -w",
-    "build": "webpack",
+    "build": "npm run lint & npm run webpack",
+    "webpack":"webpack",
     "lint":"eslint --ignore-pattern src/test/** src/**/*.js"
   },
   "keywords": [],
