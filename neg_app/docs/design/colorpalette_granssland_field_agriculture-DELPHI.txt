@@ -1,0 +1,14 @@
+DELPHI COLORS CODE
+
+#d4bd93 = $93bdd4
+#ca4e0c = $0c4eca
+#d6cd41 = $41cdd6
+#9e7f3b = $3b7f9e
+#939c1f = $1f9c93
+#657429 = $297465
+#bdbe14 = $14bebd
+#c3d3d8 = $d8d3c3
+#f1e8d7 = $d7e8f1
+#584c33 = $334c58
+#edd172 = $72d1ed
+#bd9e4b = $4b9ebd
