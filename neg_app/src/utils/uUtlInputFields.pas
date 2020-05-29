@@ -3,7 +3,8 @@ unit uUtlInputFields;
 interface
 
 uses
-  Vcl.StdCtrls, uMdlGrain, uMdlProducer, uMdlStorage, uMdlUser;
+  Vcl.StdCtrls, Vcl.Forms, Winapi.Windows, System.Classes, System.Generics.Collections,
+  System.SysUtils, uEntProducer, uEntGrain, uEntUser, uMdlGrain, uMdlProducer, uMdlStorage, uMdlUser, uEntStorage;
 
 function iif(ACondition: Boolean; AValue1: Variant; AValue2: Variant): Variant;
 
@@ -13,11 +14,10 @@ procedure fillComboBoxGrain(const AComboBox: TComboBox);
 procedure fillComboBoxGrainObject(const AComboBox: TComboBox);
 procedure fillComboBoxUser(const AComboBox: TComboBox);
 
-implementation
+procedure checkAndFixMouseWheelOnSrollBox(const AScrollBox: TScrollBox; const WheelDelta: Integer; const MousePos: TPoint;
+  var Handled: Boolean);
 
-uses
-  System.Generics.Collections, uEntStorage, System.SysUtils, uEntProducer,
-  uEntGrain, uEntUser;
+implementation
 
 // REF: https://www.devmedia.com.br/forum/operador-ternario-em-delphi-e-possivel/582077
 function iif(ACondition: Boolean; AValue1: Variant; AValue2: Variant): Variant;
@@ -129,6 +129,25 @@ begin
     FreeAndNil(vList);
   end;
 
+end;
+
+// REF: https://rarog-it.blogspot.com/2013/11/delphi-scrollbox-and-mouse-wheel.html
+procedure checkAndFixMouseWheelOnSrollBox(const AScrollBox: TScrollBox; const WheelDelta: Integer; const MousePos: TPoint;
+  var Handled: Boolean);
+var
+  LTopLeft, LTopRight, LBottomLeft, LBottomRight: Integer;
+  LPoint: TPoint;
+begin
+  LPoint := AScrollBox.ClientToScreen(Point(0, 0));
+  LTopLeft := LPoint.X;
+  LTopRight := LTopLeft + AScrollBox.Width;
+  LBottomLeft := LPoint.Y;
+  LBottomRight := LBottomLeft + AScrollBox.Width;
+  if (MousePos.X >= LTopLeft) and (MousePos.X <= LTopRight) and (MousePos.Y >= LBottomLeft) and (MousePos.Y <= LBottomRight) then
+  begin
+    AScrollBox.VertScrollBar.Position := AScrollBox.VertScrollBar.Position - WheelDelta;
+//    Handled := True;
+  end;
 end;
 
 end.

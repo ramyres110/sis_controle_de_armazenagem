@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Buttons, uMdlUser;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Buttons, uMdlUser, dxGDIPlusClasses;
 
 type
   TFrmLogin = class(TForm)
@@ -20,6 +20,7 @@ type
     SpBtnAbout: TSpeedButton;
     SpBtnManual: TSpeedButton;
     LblLoginError: TLabel;
+    Image1: TImage;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure SpBtnManualClick(Sender: TObject);

@@ -32,7 +32,6 @@ object FrmContract: TFrmContract
     ParentBackground = False
     ParentFont = False
     TabOrder = 0
-    ExplicitHeight = 361
     object Panel1: TPanel
       Left = 1
       Top = 1
@@ -90,10 +89,8 @@ object FrmContract: TFrmContract
       Font.Style = []
       ParentFont = False
       TabOrder = 1
-      ExplicitHeight = 305
       object TbShList: TTabSheet
         Caption = 'Listagem'
-        ExplicitHeight = 274
         object LblTotal: TLabel
           AlignWithMargins = True
           Left = 3
@@ -104,7 +101,6 @@ object FrmContract: TFrmContract
           Alignment = taRightJustify
           Caption = '0'
           ExplicitLeft = 558
-          ExplicitTop = 255
           ExplicitWidth = 7
         end
         object Panel2: TPanel
@@ -239,11 +235,6 @@ object FrmContract: TFrmContract
             item
               Expanded = False
               FieldName = 'GRAIN_DESC'
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWindowText
-              Font.Height = -13
-              Font.Name = 'Tahoma'
-              Font.Style = []
               Title.Caption = 'GR'#195'O'
               Width = 75
               Visible = True
@@ -403,7 +394,6 @@ object FrmContract: TFrmContract
       object TbShAdd: TTabSheet
         Caption = 'Cadastro'
         ImageIndex = 1
-        ExplicitHeight = 274
         object PnlControls: TPanel
           AlignWithMargins = True
           Left = 3
@@ -413,7 +403,6 @@ object FrmContract: TFrmContract
           Align = alBottom
           BevelOuter = bvNone
           TabOrder = 1
-          ExplicitTop = 231
           object BtnDelete: TButton
             AlignWithMargins = True
             Left = 3
@@ -522,7 +511,7 @@ object FrmContract: TFrmContract
             EditLabel.Height = 16
             EditLabel.Caption = 'Pesagem Inicial (KG)'
             TabOrder = 3
-            OnChange = EdInitialWeightChange
+            OnExit = EdInitialWeightExit
           end
           object EdMoisturePercent: TLabeledEdit
             Left = 206
@@ -533,7 +522,7 @@ object FrmContract: TFrmContract
             EditLabel.Height = 16
             EditLabel.Caption = 'Humidade (% U)'
             TabOrder = 4
-            OnChange = EdMoisturePercentChange
+            OnExit = EdMoisturePercentExit
           end
           object EdFinalWeight: TLabeledEdit
             Left = 409
@@ -544,7 +533,7 @@ object FrmContract: TFrmContract
             EditLabel.Height = 16
             EditLabel.Caption = 'Peso Final (KG)'
             TabOrder = 5
-            OnChange = EdFinalWeightChange
+            OnExit = EdFinalWeightExit
           end
           object EdGrainPrice: TLabeledEdit
             Left = 3

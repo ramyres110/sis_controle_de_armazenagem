@@ -8,7 +8,8 @@ uses
   FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys,
   FireDAC.Phys.IBBase,
   FireDAC.Phys.FB, Data.DB, FireDAC.Comp.Client, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, FireDAC.Comp.DataSet,
-  FireDAC.VCLUI.Wait, FireDAC.Comp.UI, uFrmLogin, uEntUser, uMdlUser, uFrmUser, uFrmStorage, uMdlContract, uEntContract;
+  FireDAC.VCLUI.Wait, FireDAC.Comp.UI, uFrmLogin, uEntUser, uMdlUser, uFrmUser, uFrmStorage, uMdlContract, uEntContract, uCmpPanelContract,
+  IPPeerClient, REST.Client, Data.Bind.Components, Data.Bind.ObjectScope, dxGDIPlusClasses;
 
 type
   TFrmMain = class(TForm)
@@ -27,37 +28,18 @@ type
     N3: TMenuItem;
     NovoContrato1: TMenuItem;
     GridPanel1: TGridPanel;
-    ScrollBox1: TScrollBox;
-    ScrollBox2: TScrollBox;
-    ScrollBox3: TScrollBox;
-    ScrollBox4: TScrollBox;
+    ScBxInitialScale: TScrollBox;
+    ScBxMoisture: TScrollBox;
+    ScBxFinalScale: TScrollBox;
+    ScBxFinalized: TScrollBox;
     Panel1: TPanel;
     Panel3: TPanel;
     Panel4: TPanel;
     Panel5: TPanel;
-    Panel6: TPanel;
-    Panel7: TPanel;
-    Panel8: TPanel;
-    Panel9: TPanel;
-    Panel11: TPanel;
-    Panel10: TPanel;
-    SpeedButton3: TSpeedButton;
-    Label1: TLabel;
-    PpMnOption: TPopupMenu;
-    Editar1: TMenuItem;
-    Excluir1: TMenuItem;
-    Button1: TButton;
-    Panel16: TPanel;
-    Label13: TLabel;
-    Label14: TLabel;
-    Label15: TLabel;
-    Panel17: TPanel;
-    SpeedButton6: TSpeedButton;
-    Label16: TLabel;
-    Label5: TLabel;
-    Label6: TLabel;
-    Edit1: TEdit;
-    BtnFilterDone: TSpeedButton;
+    PnlTotalInitialScale: TPanel;
+    PnlTotalMoisture: TPanel;
+    PnlTotalFinalScale: TPanel;
+    PnlTotalFinalized: TPanel;
     PpMnFilter: TPopupMenu;
     btnFilterToday: TMenuItem;
     btnFilterWeek: TMenuItem;
@@ -72,7 +54,14 @@ type
     Panel2: TPanel;
     Label2: TLabel;
     BtnNew: TButton;
+    BtnFilterDone: TSpeedButton;
+    RESTClient1: TRESTClient;
+    RESTRequest1: TRESTRequest;
+    RESTResponse1: TRESTResponse;
+    Image1: TImage;
     procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure RegistrodeProdutor1Click(Sender: TObject);
     procedure RegistrodeGros1Click(Sender: TObject);
@@ -81,21 +70,33 @@ type
     procedure Manual1Click(Sender: TObject);
     procedure Sobre1Click(Sender: TObject);
     procedure BtnFilterDoneClick(Sender: TObject);
-    procedure SpeedButton3Click(Sender: TObject);
-    procedure FormShow(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
     procedure Usurio1Click(Sender: TObject);
     procedure ArmazmSilo1Click(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
     procedure BtnNewClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure scrollBoxWheelDown(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+    procedure scrollBoxWheelUp(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
   private
     { Private declarations }
     FUserLogged: TUser;
+    FContractModel: TContractModel;
+
+    FTotalInitialScale: Integer;
+    FTotalMoisture: Integer;
+    FTotalFinalScale: Integer;
+    FTotalFinalized: Integer;
 
     procedure init;
     procedure loadUserInfo(AUserId: Integer);
 
     procedure newContract;
+    procedure clearContracts;
+    procedure loadContracts;
+
+    procedure onPanelUpdate(Sender: TObject);
+
+    procedure incrementTotal(const APnl: TPanel; var ATotal: Integer);
   public
     { Public declarations }
     property userLogged: TUser read FUserLogged;
@@ -108,7 +109,8 @@ implementation
 
 {$R *.dfm}
 
-uses uFrmProducer, uFrmGrain, uFrmContract, uFrmAbout, uFrmManual;
+uses uFrmProducer, uFrmGrain, uFrmContract, uFrmAbout, uFrmManual,
+  System.Generics.Collections, uUtlInputFields;
 
 procedure TFrmMain.Contratos1Click(Sender: TObject);
 begin
@@ -125,6 +127,8 @@ procedure TFrmMain.FormCreate(Sender: TObject);
 begin
   Caption := Application.Title;
   PnlFull.Visible := False;
+
+  FContractModel := TContractModel.Create;
 end;
 
 procedure TFrmMain.FormDestroy(Sender: TObject);
@@ -132,6 +136,11 @@ begin
   if (Self.FUserLogged <> nil) then
   begin
     FreeAndNil(Self.FUserLogged);
+  end;
+
+  if (Self.FContractModel <> nil) then
+  begin
+    FreeAndNil(Self.FContractModel);
   end;
 end;
 
@@ -154,9 +163,65 @@ begin
   end;
 end;
 
+procedure TFrmMain.incrementTotal(const APnl: TPanel; var ATotal: Integer);
+begin
+  inc(ATotal);
+  APnl.Caption := IntToStr(ATotal);
+end;
+
 procedure TFrmMain.init();
 begin
   PnlFull.Visible := True;
+
+  Self.loadContracts;
+end;
+
+procedure TFrmMain.loadContracts;
+var
+  vPanelContract: TPanelContract;
+  vContract: TContract;
+  vList: TObjectList<TContract>;
+begin
+  clearContracts;
+  vList := TObjectList<TContract>.Create;
+  try
+    TContractModel.loadList(vList);
+    for vContract in vList do
+    begin
+      vPanelContract := TPanelContract.Create(Self);
+      vPanelContract.contract := vContract;
+      vPanelContract.userLogged := FUserLogged;
+      vPanelContract.onUpdate := onPanelUpdate;
+
+      if (vContract.initialWeight = 0) then
+      begin
+        vPanelContract.Parent := ScBxInitialScale;
+        vPanelContract.colIndex := 0;
+        Self.incrementTotal(PnlTotalInitialScale, FTotalInitialScale);
+      end
+      else if (vContract.moisturePercent = 0) then
+      begin
+        vPanelContract.Parent := ScBxMoisture;
+        vPanelContract.colIndex := 1;
+        Self.incrementTotal(PnlTotalMoisture, FTotalMoisture);
+      end
+      else if vContract.finalWeight = 0 then
+      begin
+        vPanelContract.Parent := ScBxFinalScale;
+        vPanelContract.colIndex := 2;
+        Self.incrementTotal(PnlTotalFinalScale, FTotalFinalScale);
+      end
+      else
+      begin
+        vPanelContract.Parent := ScBxFinalized;
+        vPanelContract.colIndex := 3;
+        Self.incrementTotal(PnlTotalFinalized, FTotalFinalized);
+      end;
+
+    end;
+  finally
+    FreeAndNil(vList);
+  end;
 end;
 
 procedure TFrmMain.loadUserInfo(AUserId: Integer);
@@ -192,6 +257,11 @@ begin
   Self.newContract;
 end;
 
+procedure TFrmMain.onPanelUpdate(Sender: TObject);
+begin
+  loadContracts;
+end;
+
 procedure TFrmMain.RegistrodeGros1Click(Sender: TObject);
 begin
   FrmGrain := TFrmGrain.Create(Self);
@@ -212,12 +282,27 @@ begin
   finally
     FrmProducer.Free;
   end;
-
 end;
 
 procedure TFrmMain.Sair1Click(Sender: TObject);
 begin
   Application.Terminate;
+end;
+
+procedure TFrmMain.scrollBoxWheelDown(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+begin
+  checkAndFixMouseWheelOnSrollBox(ScBxInitialScale, -8, MousePos, Handled);
+  checkAndFixMouseWheelOnSrollBox(ScBxMoisture, -8, MousePos, Handled);
+  checkAndFixMouseWheelOnSrollBox(ScBxFinalScale, -8, MousePos, Handled);
+  checkAndFixMouseWheelOnSrollBox(ScBxFinalized, -8, MousePos, Handled);
+end;
+
+procedure TFrmMain.scrollBoxWheelUp(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+begin
+  checkAndFixMouseWheelOnSrollBox(ScBxInitialScale, 8, MousePos, Handled);
+  checkAndFixMouseWheelOnSrollBox(ScBxMoisture, 8, MousePos, Handled);
+  checkAndFixMouseWheelOnSrollBox(ScBxFinalScale, 8, MousePos, Handled);
+  checkAndFixMouseWheelOnSrollBox(ScBxFinalized, 8, MousePos, Handled);
 end;
 
 procedure TFrmMain.Sobre1Click(Sender: TObject);
@@ -233,15 +318,6 @@ end;
 procedure TFrmMain.SpeedButton1Click(Sender: TObject);
 begin
   Self.newContract;
-end;
-
-procedure TFrmMain.SpeedButton3Click(Sender: TObject);
-var
-  vPoint: TPoint;
-begin
-  vPoint := SpeedButton3.ClientToScreen(Point(0, SpeedButton3.Height));
-  PpMnOption.Popup(vPoint.X, vPoint.Y);
-
 end;
 
 procedure TFrmMain.Usurio1Click(Sender: TObject);
@@ -270,13 +346,43 @@ procedure TFrmMain.BtnFilterDoneClick(Sender: TObject);
 var
   vPoint: TPoint;
 begin
-  vPoint := BtnFilterDone.ClientToScreen(Point(0, BtnFilterDone.Height));
-  PpMnFilter.Popup(vPoint.X, vPoint.Y);
+   vPoint := BtnFilterDone.ClientToScreen(Point(0, BtnFilterDone.Height));
+   PpMnFilter.Popup(vPoint.X, vPoint.Y);
 end;
 
 procedure TFrmMain.BtnNewClick(Sender: TObject);
 begin
   Self.newContract;
+  loadContracts;
+end;
+
+procedure TFrmMain.Button1Click(Sender: TObject);
+var
+  vP: string;
+begin
+  vP := InputBox('Lançar Peso 1', 'Pesagem Inicial', '0');
+end;
+
+procedure TFrmMain.clearContracts;
+var
+  I: Integer;
+begin
+  FTotalInitialScale := 0;
+  FTotalMoisture := 0;
+  FTotalFinalScale := 0;
+  FTotalFinalized := 0;
+
+  I := 0;
+  while I < Self.ComponentCount do
+  begin
+    if Self.Components[I] is TPanelContract then
+    begin
+      Self.Components[I].Free;
+      I := 0;
+    end;
+    inc(I);
+  end;
+
 end;
 
 end.

@@ -23,6 +23,8 @@ type
     procedure delete;
     procedure findAll(AQuery: string);
     procedure getById(AId: Integer);
+
+    procedure fillContractByQuery(const AQry:TFDQuery; var AContract:TContract);
     procedure freeContract;
 
     property qry: TFDQuery read FQry; // -Qry Select
@@ -30,6 +32,12 @@ type
     property contract: TContract read FContract write FContract;
 
     class procedure loadList(var AList:TObjectList<TContract>);
+    class procedure deleteById(AId:Integer);
+
+    class procedure updateInitialWeight(AId: Integer; AValue: Double; const AUser: TUser);
+    class procedure updateMoisture(AId: Integer; AValue: Double; const AUser: TUser);
+    class procedure updateFinalWeight(AId: Integer; AValue: Double; const AUser: TUser);
+    class procedure updateValidated(AId: Integer; AIsValidated: Boolean; AValidatedBy: string);
   end;
 
 implementation
@@ -48,7 +56,7 @@ const
   + ' CO.CHANGED_BY, US2.USERNAME AS CHANGED_BY_NAME, CO.CHANGED_AT, '
   + ' CO.STORAGE_ID, ST."NAME" AS STORAGE_NAME, '
   + ' CO.PRODUCER_ID, PR."NAME" AS PRODUCER_NAME, '
-  + ' CO.GRAIN_ID, GR.DESCRIPTION AS GRAIN_DESC '
+  + ' CO.GRAIN_ID, GR.DESCRIPTION AS GRAIN_DESC, GR.PRICE_KG AS GRAIN_PRICE '
   + ' FROM TB_CONTRACTS CO '
   + ' LEFT JOIN TB_USERS US1 ON US1.ID = CO.CREATED_BY '
   + ' LEFT JOIN TB_USERS US2 ON US2.ID = CO.CHANGED_BY '
@@ -94,6 +102,25 @@ begin
   end;
 end;
 
+class procedure TContractModel.deleteById(AId: Integer);
+var
+  vMdl: TContractModel;
+begin
+  vMdl := TContractModel.Create;
+  try
+    try
+      vMdl.contract := TContract.Create;
+      vMdl.contract.id := AId;
+      vMdl.delete;
+    except
+      on E: Exception do
+        raise E;
+    end;
+  finally
+    FreeAndNil(vMdl);
+  end;
+end;
+
 destructor TContractModel.Destroy;
 begin
   FreeAndNil(Self.FDS);
@@ -103,6 +130,71 @@ begin
   Self.freeContract;
 
   inherited;
+end;
+
+procedure TContractModel.fillContractByQuery(const AQry: TFDQuery; var AContract: TContract);
+begin
+  if(AQry = nil) then
+    raise Exception.Create('Create a query before fill contract');
+
+  if (AContract = nil) then
+    raise Exception.Create('Create a contract before fill');
+
+  if(AQry.IsEmpty)then
+    Exit;
+
+  AContract.id := AQry.FieldByName('ID').AsInteger;
+
+  AContract.storage := TStorage.Create;
+  AContract.storage.id := AQry.FieldByName('STORAGE_ID').AsInteger;
+  AContract.storage.name := AQry.FieldByName('STORAGE_NAME').AsString;
+
+  AContract.producer := TProducer.Create;
+  AContract.producer.id := AQry.FieldByName('PRODUCER_ID').AsInteger;
+  AContract.producer.name := AQry.FieldByName('PRODUCER_NAME').AsString;
+
+  AContract.grain := TGrain.Create;
+  AContract.grain.id := AQry.FieldByName('GRAIN_ID').AsInteger;
+  AContract.grain.description := AQry.FieldByName('GRAIN_DESC').AsString;
+  AContract.grain.priceKG := AQry.FieldByName('GRAIN_PRICE').AsFloat;
+
+
+  // INITIAL_WEIGHT
+  AContract.initialWeight := AQry.FieldByName('INITIAL_WEIGHT').AsFloat;
+  AContract.initialWeightedBy := TUser.Create;
+  AContract.initialWeightedBy.id := AQry.FieldByName('INITIAL_WEIGHTED_BY').AsInteger;
+  AContract.initialWeightedBy.username := AQry.FieldByName('INITIAL_WEIGHTED_BY_NAME').AsString;
+  AContract.initialWeightedAt := AQry.FieldByName('INITIAL_WEIGHTED_AT').AsDateTime;
+
+  // MOISTURE_PERCENT
+  AContract.moisturePercent := AQry.FieldByName('MOISTURE_PERCENT').AsFloat;
+  AContract.moistureBy := TUser.Create;
+  AContract.moistureBy.id := AQry.FieldByName('MOISTURE_BY').AsInteger;
+  AContract.moistureBy.username := AQry.FieldByName('MOISTURE_BY_NAME').AsString;
+  AContract.moistureAt := AQry.FieldByName('MOISTURE_AT').AsDateTime;
+
+  // FINAL_WEIGHT
+  AContract.finalWeight := AQry.FieldByName('FINAL_WEIGHT').AsInteger;
+  AContract.finalWeightedBy := TUser.Create;
+  AContract.finalWeightedBy.id := AQry.FieldByName('FINAL_WEIGHTED_BY').AsInteger;
+  AContract.finalWeightedBy.username := AQry.FieldByName('FINAL_WEIGHTED_BY_NAME').AsString;
+  AContract.finalWeightedAt := AQry.FieldByName('FINAL_WEIGHTED_AT').AsDateTime;
+
+  AContract.isValidated := iif(AQry.FieldByName('IS_VALIDATED').AsInteger = 1, True, False);
+  AContract.validatedBy := AQry.FieldByName('VALIDATED_BY').AsString;
+  AContract.validatedAt := AQry.FieldByName('VALIDATED_AT').AsDateTime;
+
+  AContract.externalId := AQry.FieldByName('EXTERNAL_ID').AsInteger;
+
+  AContract.createdBy := TUser.Create;
+  AContract.createdBy.id := AQry.FieldByName('CREATED_BY').AsInteger;
+  AContract.createdBy.username := AQry.FieldByName('CREATED_BY_NAME').AsString;
+  AContract.createdAt := AQry.FieldByName('CREATED_AT').AsDateTime;
+
+  AContract.changedBy := TUser.Create;
+  AContract.changedBy.id := AQry.FieldByName('CHANGED_BY').AsInteger;
+  AContract.changedBy.username := AQry.FieldByName('CHANGED_BY_NAME').AsString;
+  AContract.changedAt := AQry.FieldByName('CHANGED_AT').AsDateTime;
 end;
 
 procedure TContractModel.findAll(AQuery: string);
@@ -147,58 +239,8 @@ begin
       vQry.Open;
       if(not vQry.IsEmpty)then
       begin
-
         Self.FContract := TContract.Create;
-        Self.FContract.id := vQry.FieldByName('ID').AsInteger;
-
-        Self.FContract.storage := TStorage.Create;
-        Self.FContract.storage.id := vQry.FieldByName('STORAGE_ID').AsInteger;
-        Self.FContract.storage.name := vQry.FieldByName('STORAGE_NAME').AsString;
-
-        Self.FContract.producer := TProducer.Create;
-        Self.FContract.producer.id := vQry.FieldByName('PRODUCER_ID').AsInteger;
-        Self.FContract.producer.name := vQry.FieldByName('PRODUCER_NAME').AsString;
-
-        Self.FContract.grain := TGrain.Create;
-        Self.FContract.grain.id := vQry.FieldByName('GRAIN_ID').AsInteger;
-        Self.FContract.grain.description := vQry.FieldByName('GRAIN_DESC').AsString;
-
-        //INITIAL_WEIGHT
-        Self.FContract.initialWeight := vQry.FieldByName('INITIAL_WEIGHT').AsFloat;
-        Self.FContract.initialWeightedBy := TUser.Create;
-        Self.FContract.initialWeightedBy.id := vQry.FieldByName('INITIAL_WEIGHTED_BY').AsInteger;
-        Self.FContract.initialWeightedBy.username := vQry.FieldByName('INITIAL_WEIGHTED_BY_NAME').AsString;
-        Self.FContract.initialWeightedAt := vQry.FieldByName('INITIAL_WEIGHTED_AT').AsDateTime;
-
-        //MOISTURE_PERCENT
-        Self.FContract.moisturePercent := vQry.FieldByName('MOISTURE_PERCENT').AsFloat;
-        Self.FContract.moistureBy := TUser.Create;
-        Self.FContract.moistureBy.id := vQry.FieldByName('MOISTURE_BY').AsInteger;
-        Self.FContract.moistureBy.username := vQry.FieldByName('MOISTURE_BY_NAME').AsString;
-        Self.FContract.moistureAt := vQry.FieldByName('MOISTURE_AT').AsDateTime;
-
-        //FINAL_WEIGHT
-        Self.FContract.finalWeight := vQry.FieldByName('FINAL_WEIGHT').AsInteger;
-        Self.FContract.finalWeightedBy := TUser.Create;
-        Self.FContract.finalWeightedBy.id := vQry.FieldByName('FINAL_WEIGHTED_BY').AsInteger;
-        Self.FContract.finalWeightedBy.username := vQry.FieldByName('FINAL_WEIGHTED_BY_NAME').AsString;
-        Self.FContract.finalWeightedAt := vQry.FieldByName('FINAL_WEIGHTED_AT').AsDateTime;
-
-        Self.FContract.isValidated := iif(vQry.FieldByName('IS_VALIDATED').AsInteger = 1, True, False);
-        Self.FContract.validatedBy := vQry.FieldByName('VALIDATED_BY').AsString;
-        Self.FContract.validatedAt := vQry.FieldByName('VALIDATED_AT').AsDateTime;
-
-        Self.FContract.externalId := vQry.FieldByName('EXTERNAL_ID').AsInteger;
-
-        Self.FContract.createdBy := TUser.Create;
-        Self.FContract.createdBy.id := vQry.FieldByName('CREATED_BY').AsInteger;
-        Self.FContract.createdBy.username := vQry.FieldByName('CREATED_BY_NAME').AsString;
-        Self.FContract.createdAt := vQry.FieldByName('CREATED_AT').AsDateTime;
-
-        Self.FContract.changedBy := TUser.Create;
-        Self.FContract.changedBy.id := vQry.FieldByName('CHANGED_BY').AsInteger;
-        Self.FContract.changedBy.username := vQry.FieldByName('CHANGED_BY_NAME').AsString;
-        Self.FContract.changedAt := vQry.FieldByName('CHANGED_AT').AsDateTime;
+        Self.fillContractByQuery(vQry,FContract);
       end;
     except
       on E: Exception do
@@ -221,9 +263,7 @@ begin
   vMdl := TContractModel.Create;
   vMdl.FDB.initQuery(vQry);
   try
-    vQry.sql.Text := 'SELECT ID, STORAGE_ID, PRODUCER_ID, GRAIN_ID, INITIAL_WEIGHT, INITIAL_WEIGHTED_BY, INITIAL_WEIGHTED_AT, '
-    +'  FINAL_WEIGHT, FINAL_WEIGHTED_BY, FINAL_WEIGHTED_AT, MOISTURE_PERCENT, MOISTURE_BY, MOISTURE_AT, IS_VALIDATED, VALIDATED_BY, '
-    +'  VALIDATED_AT, EXTERNAL_ID, CREATED_BY, CREATED_AT, CHANGED_BY, CHANGED_AT FROM TB_CONTRACTS ;';
+    vQry.sql.Text := cFullSql;
     try
       vQry.Open;
       if not vQry.IsEmpty then
@@ -231,50 +271,7 @@ begin
         while not vQry.Eof do
         begin
           vAuxObj := TContract.Create;
-          vAuxObj.id := vQry.FieldByName('ID').AsInteger;
-
-          vAuxObj.storage := TStorage.Create;
-          vAuxObj.storage.id := vQry.FieldByName('STORAGE_ID').AsInteger;
-
-          vAuxObj.producer := TProducer.Create;
-          vAuxObj.producer.id := vQry.FieldByName('PRODUCER_ID').AsInteger;
-
-          vAuxObj.grain := TGrain.Create;
-          vAuxObj.grain.id := vQry.FieldByName('GRAIN_ID').AsInteger;
-
-          // INITIAL_WEIGHT
-          vAuxObj.initialWeight := vQry.FieldByName('INITIAL_WEIGHT').AsFloat;
-          vAuxObj.initialWeightedBy := TUser.Create;
-          vAuxObj.initialWeightedBy.id := vQry.FieldByName('INITIAL_WEIGHTED_BY').AsInteger;
-          vAuxObj.initialWeightedAt := vQry.FieldByName('INITIAL_WEIGHTED_AT').AsDateTime;
-
-          // MOISTURE_PERCENT
-          vAuxObj.moisturePercent := vQry.FieldByName('MOISTURE_PERCENT').AsFloat;
-          vAuxObj.moistureBy := TUser.Create;
-          vAuxObj.moistureBy.id := vQry.FieldByName('MOISTURE_BY').AsInteger;
-          vAuxObj.moistureAt := vQry.FieldByName('MOISTURE_AT').AsDateTime;
-
-          // FINAL_WEIGHT
-          vAuxObj.finalWeight := vQry.FieldByName('FINAL_WEIGHT').AsInteger;
-          vAuxObj.finalWeightedBy := TUser.Create;
-          vAuxObj.finalWeightedBy.id := vQry.FieldByName('FINAL_WEIGHTED_BY').AsInteger;
-          vAuxObj.finalWeightedAt := vQry.FieldByName('FINAL_WEIGHTED_AT').AsDateTime;
-
-          vAuxObj.isValidated := vQry.FieldByName('IS_VALIDATED').AsBoolean;
-          vAuxObj.validatedBy := vQry.FieldByName('VALIDATED_BY').AsString;
-          vAuxObj.validatedAt := vQry.FieldByName('VALIDATED_AT').AsDateTime;
-
-          vAuxObj.externalId := vQry.FieldByName('EXTERNAL_ID').AsInteger;
-
-          vAuxObj.createdAt := vQry.FieldByName('CREATED_AT').AsDateTime;
-          vAuxObj.changedAt := vQry.FieldByName('CHANGED_AT').AsDateTime;
-
-          vAuxObj.createdBy := TUser.Create;
-          vAuxObj.createdBy.id := vQry.FieldByName('CREATED_BY').AsInteger;
-
-          vAuxObj.changedBy := TUser.Create;
-          vAuxObj.changedBy.id := vQry.FieldByName('CHANGED_BY').AsInteger;
-
+          vMdl.fillContractByQuery(vQry, vAuxObj);
           AList.Add(vAuxObj);
           vQry.Next;
         end;
@@ -346,6 +343,7 @@ begin
 
     try
       vQry.ExecSQL;
+
     except
       on E: Exception do
         raise E;
@@ -384,7 +382,6 @@ begin
     +' CHANGED_BY = :CHANGED_BY,'
     +' CHANGED_AT = CURRENT_TIMESTAMP '
     +' WHERE ID = :ID;';
-
     vQry.ParamByName('ID').AsInteger := FContract.id;
 
     vQry.ParamByName('STORAGE_ID').AsInteger := FContract.storage.id;
@@ -408,7 +405,6 @@ begin
     vQry.ParamByName('VALIDATED_AT').AsDate := FContract.validatedAt;
 
     vQry.ParamByName('CHANGED_BY').AsInteger := FContract.changedBy.id;
-
     try
       vQry.ExecSQL;
     except
@@ -418,6 +414,123 @@ begin
   finally
     FreeAndNil(vQry);
   end;
+end;
+
+class procedure TContractModel.updateFinalWeight(AId: Integer; AValue: Double; const AUser: TUser);
+var
+  vQry: TFDQuery;
+  vMdl: TContractModel;
+begin
+  vMdl := TContractModel.Create;
+  vMdl.FDB.initQuery(vQry);
+  try
+    vQry.sql.Text := 'UPDATE TB_CONTRACTS SET '
+    + ' FINAL_WEIGHT = :FINAL_WEIGHT, '
+    + ' FINAL_WEIGHTED_BY = :FINAL_WEIGHTED_BY, '
+    + ' FINAL_WEIGHTED_AT = :FINAL_WEIGHTED_AT '
+    + ' WHERE ID = :ID;';
+    vQry.ParamByName('ID').AsInteger := AId;
+    vQry.ParamByName('FINAL_WEIGHT').AsFloat := AValue;
+    vQry.ParamByName('FINAL_WEIGHTED_BY').AsInteger := AUser.id;
+    vQry.ParamByName('FINAL_WEIGHTED_AT').AsDate := Now();
+    try
+      vQry.ExecSQL;
+    except
+      on E: Exception do
+        raise E;
+    end;
+  finally
+    FreeAndNil(vQry);
+    FreeAndNil(vMdl);
+  end;
+end;
+
+class procedure TContractModel.updateInitialWeight(AId: Integer; AValue: Double; const AUser: TUser);
+var
+  vQry: TFDQuery;
+  vMdl: TContractModel;
+begin
+  vMdl := TContractModel.Create;
+  vMdl.FDB.initQuery(vQry);
+  try
+    vQry.sql.Text := 'UPDATE TB_CONTRACTS SET '
+    + ' INITIAL_WEIGHT = :INITIAL_WEIGHT,'
+    + ' INITIAL_WEIGHTED_BY = :INITIAL_WEIGHTED_BY,'
+    + ' INITIAL_WEIGHTED_AT = :INITIAL_WEIGHTED_AT '
+    + ' WHERE ID = :ID;';
+    vQry.ParamByName('ID').AsInteger := AId;
+    vQry.ParamByName('INITIAL_WEIGHT').AsFloat := AValue;
+    vQry.ParamByName('INITIAL_WEIGHTED_BY').AsInteger := AUser.id;
+    vQry.ParamByName('INITIAL_WEIGHTED_AT').AsDate := Now();
+    try
+      vQry.ExecSQL;
+    except
+      on E: Exception do
+        raise E;
+    end;
+  finally
+    FreeAndNil(vQry);
+    FreeAndNil(vMdl);
+  end;
+end;
+
+class procedure TContractModel.updateMoisture(AId: Integer; AValue: Double; const AUser: TUser);
+var
+  vQry: TFDQuery;
+  vMdl: TContractModel;
+begin
+  vMdl := TContractModel.Create;
+  vMdl.FDB.initQuery(vQry);
+  try
+    vQry.sql.Text := 'UPDATE TB_CONTRACTS SET '
+    + '  MOISTURE_PERCENT = :MOISTURE_PERCENT, '
+    + '  MOISTURE_BY = :MOISTURE_BY, '
+    + '  MOISTURE_AT = :MOISTURE_AT '
+    + ' WHERE ID = :ID;';
+    vQry.ParamByName('ID').AsInteger := AId;
+    vQry.ParamByName('MOISTURE_PERCENT').AsFloat := AValue;
+    vQry.ParamByName('MOISTURE_BY').AsInteger := AUser.id;
+    vQry.ParamByName('MOISTURE_AT').AsDate := Now();
+    try
+      vQry.ExecSQL;
+    except
+      on E: Exception do
+        raise E;
+    end;
+  finally
+    FreeAndNil(vQry);
+    FreeAndNil(vMdl);
+  end;
+end;
+
+class procedure TContractModel.updateValidated(AId: Integer; AIsValidated: Boolean; AValidatedBy: string);
+var
+  vQry: TFDQuery;
+  vMdl: TContractModel;
+begin
+  vMdl := TContractModel.Create;
+  vMdl.FDB.initQuery(vQry);
+  try
+    vQry.sql.Text := 'UPDATE TB_CONTRACTS SET '
+    + '  IS_VALIDATED = :IS_VALIDATED, '
+    + '  VALIDATED_BY = :VALIDATED_BY, '
+    + '  VALIDATED_AT = :VALIDATED_AT '
+    + ' WHERE ID = :ID;';
+    vQry.ParamByName('ID').AsInteger := AId;
+    vQry.ParamByName('IS_VALIDATED').AsInteger := iif(AIsValidated,1,0);
+    vQry.ParamByName('VALIDATED_BY').AsString := AValidatedBy;
+    vQry.ParamByName('VALIDATED_AT').AsDate := Now();
+    try
+      vQry.ExecSQL;
+    except
+      on E: Exception do
+        raise E;
+    end;
+  finally
+    FreeAndNil(vQry);
+    FreeAndNil(vMdl);
+  end;
+
 end;
 
 end.

@@ -57,9 +57,9 @@ type
     procedure EdSearchKeyPress(Sender: TObject; var Key: Char);
     procedure RdGrValidatedClick(Sender: TObject);
     procedure CboxGrainChange(Sender: TObject);
-    procedure EdInitialWeightChange(Sender: TObject);
-    procedure EdMoisturePercentChange(Sender: TObject);
-    procedure EdFinalWeightChange(Sender: TObject);
+    procedure EdInitialWeightExit(Sender: TObject);
+    procedure EdMoisturePercentExit(Sender: TObject);
+    procedure EdFinalWeightExit(Sender: TObject);
   private
     { Private declarations }
     FContractModel: TContractModel;
@@ -126,6 +126,22 @@ begin
     Exit;
   end;
 
+  if (EdMoisturePercent.Text <> EmptyStr) then
+    if (EdInitialWeight.Text = EmptyStr) then
+    begin
+      showWarning('Para informar a umidade informe o peso inicial!');
+      EdFinalWeight.SetFocus;
+      Exit;
+    end;
+
+  if (EdFinalWeight.Text <> EmptyStr) then
+    if (EdInitialWeight.Text = EmptyStr) or (EdMoisturePercent.Text = EmptyStr) then
+    begin
+      showWarning('Para informar o peso final informe o peso inicial e a umidade!');
+      EdFinalWeight.SetFocus;
+      Exit;
+    end;
+
   if (Self.Tag = 1) then
     Self.update
   else
@@ -146,8 +162,8 @@ begin
   vTotalWhgt := 0;
   vTotalPrice := 0;
 
-  if not((EdInitialWeight.Text = EmptyStr) or (EdMoisturePercent.Text = EmptyStr) or (EdFinalWeight.Text = EmptyStr) or
-    (EdGrainPrice.Text = EmptyStr) or (CboxGrain.ItemIndex <= 0)) then
+  if (EdInitialWeight.Text <> EmptyStr) and (EdMoisturePercent.Text <> EmptyStr) and (EdFinalWeight.Text <> EmptyStr) and
+    (EdGrainPrice.Text <> EmptyStr) then
   begin
     vGrainPrice := TGrainModel.getPriceById(Integer(CboxGrain.Items.Objects[CboxGrain.ItemIndex]));
     vInitWght := StrToFloat(EdInitialWeight.Text);
@@ -160,6 +176,7 @@ begin
 
   EdTotalWeighted.Text := FloatToStr(vTotalWhgt);
   EdTotalPrice.Text := FloatToStrF(vTotalPrice, ffCurrency, 8, 4);
+
 end;
 
 procedure TFrmContract.CboxGrainChange(Sender: TObject);
@@ -174,7 +191,7 @@ end;
 
 procedure TFrmContract.clear;
 begin
-  if(Self.Tag = 2)then
+  if (Self.Tag = 2) then
   begin
     Close;
   end;
@@ -232,17 +249,17 @@ begin
   end;
 end;
 
-procedure TFrmContract.EdFinalWeightChange(Sender: TObject);
+procedure TFrmContract.EdFinalWeightExit(Sender: TObject);
 begin
   Self.calculate;
 end;
 
-procedure TFrmContract.EdInitialWeightChange(Sender: TObject);
+procedure TFrmContract.EdInitialWeightExit(Sender: TObject);
 begin
   Self.calculate;
 end;
 
-procedure TFrmContract.EdMoisturePercentChange(Sender: TObject);
+procedure TFrmContract.EdMoisturePercentExit(Sender: TObject);
 begin
   Self.calculate;
 end;

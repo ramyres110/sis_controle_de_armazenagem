@@ -29,7 +29,8 @@ uses
   uUtlGrid in 'utils\uUtlGrid.pas',
   uUtlInputFields in 'utils\uUtlInputFields.pas',
   uUtlForm in 'utils\uUtlForm.pas',
-  uUtlCalculator in 'utils\uUtlCalculator.pas';
+  uUtlCalculator in 'utils\uUtlCalculator.pas',
+  uCmpPanelContract in 'components\uCmpPanelContract.pas';
 
 {$R *.res}
 

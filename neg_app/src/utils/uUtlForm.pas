@@ -7,7 +7,7 @@ uses
   Vcl.Forms, Vcl.Controls, Vcl.ComCtrls, Vcl.Graphics, uUtlGrid, uEntUser;
 
 type
-  TNotifyNewClick = procedure(Sender: TObject) of object;
+  TEventListener = procedure(Sender: TObject) of object;
 
   TGenericForm = class(TForm)
   private
@@ -30,7 +30,7 @@ type
 
     procedure PrepareForm;
   public
-    onNewClick: TNotifyNewClick;
+    onNewClick: TEventListener;
 
     property userLogged: TUser read FUserLogged write FUserLogged;
   end;
