@@ -2,7 +2,7 @@
   "name": "api_contratos_sis_controle_armazenagem",
   "version": "0.0.1",
   "description": "API de Gestão de Contratos para o Sistema de Controle de Armazenagem de Gãos",
-  "main": "bin/server.js",
+  "main": "bin/index.js",
   "directories": {
     "doc": "docs"
   },
@@ -11,8 +11,7 @@
     "dev": "nodemon src/index.js",
     "test": "mocha src/test",
     "test-watch": "mocha src/test -w",
-    "build": "npm run lint & npm run webpack",
-    "webpack": "webpack",
+    "build": "gulp",
     "lint": "eslint --ignore-pattern src/test/** src/**/*.js"
   },
   "keywords": [],
@@ -20,11 +19,11 @@
   "license": "ISC",
   "devDependencies": {
     "eslint": "^7.0.0",
+    "gulp": "^4.0.2",
+    "gulp-cli": "^2.2.1",
     "mocha": "^7.1.2",
     "nodemon": "^2.0.4",
-    "should": "^13.2.3",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11"
+    "should": "^13.2.3"
   },
   "dependencies": {
     "bluebird": "^3.7.2",

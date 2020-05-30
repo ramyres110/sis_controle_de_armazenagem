@@ -1,6 +1,6 @@
 const getDatabase = require('../utils/database-Loki-utils');
 const Promise = require('bluebird');
-const uid = require('uid');
+const uidGenerator = require('uid/dist/index');
 
 var db = null;
 var collection = null;
@@ -22,15 +22,13 @@ ContractModel.findAll = (query) => {
 
 
 ContractModel.findById = (id) => {
-    return Promise.resolve(
-        (collection.find({ id })[0]) ?
-            {
-                status: 200,
-                result: collection.find({ id })[0]
-            } : {
-                status: 404,
-                result: {}
-            });
+    const result = collection.findOne({ uid: id });
+    if (!result) {
+        return Promise.resolve({ status: 404, result: {} });
+    }
+    delete result.$loki;
+    delete result.meta;
+    return Promise.resolve({ status: 200, result: { ...result, id: result.externalId, externalId: result.uid } });
 }
 
 
@@ -50,12 +48,11 @@ ContractModel.findByProducer = (document) => {
 
 
 ContractModel.validate = (id, body) => {
-    let contract = collection.findOne({ id });
+    let contract = collection.findOne({ uid: id });
     if (!contract) return Promise.resolve({ status: 404, result: {} });
     const validation = {
         isValidated: body.isValidated,
-        validatedBy: body.validatedBy,
-        validatedAt: new Date(),
+        validatedBy: body.validatedBy
     }
     contract = { ...contract, ...validation };
     collection.update(contract);
@@ -64,14 +61,18 @@ ContractModel.validate = (id, body) => {
 
 
 ContractModel.create = (body) => {
-    const id = uid();
-    body.externalId = body.id;
-    body.id = id;
-    const result = collection.insert(body);
-    db.saveDatabase((err) => {
-        if (err) console.error(err);
+    const data = {
+        ...body,
+        uid: uidGenerator(),
+        externalId: body.id
+    };
+    delete data.id;
+    const result = collection.insert(data);
+    const resp = { ...body, externalId: data.uid };
+    return Promise.resolve({
+        status: 200,
+        result: resp
     });
-    return Promise.resolve({ status: 200, result })
 }
 
 

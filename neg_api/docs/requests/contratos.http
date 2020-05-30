@@ -68,7 +68,7 @@ Content-Type: application/json
 
 
 ### POST - VALIDATE CONTRACT
-POST {{host}}{{path}}/contrato/{{uid}}/valida
+POST {{host}}{{path}}/contrato/5jb87uynunv/valida
 Content-Type: application/json
 
 {
