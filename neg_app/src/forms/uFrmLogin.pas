@@ -78,6 +78,10 @@ end;
 
 procedure TFrmLogin.FormShow(Sender: TObject);
 begin
+{$IFDEF DEBUG}
+  EdUsername.Text := 'admin';
+  EdPassword.Text := 'admin';
+{$ENDIF}
   EdUsername.SetFocus;
 end;
 

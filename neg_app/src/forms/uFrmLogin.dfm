@@ -62,7 +62,6 @@ object FrmLogin: TFrmLogin
       Font.Style = []
       ParentFont = False
       TabOrder = 0
-      Text = 'admin'
       OnKeyPress = EdUsernameKeyPress
     end
     object EdPassword: TLabeledEdit
@@ -81,7 +80,6 @@ object FrmLogin: TFrmLogin
       ParentFont = False
       PasswordChar = '*'
       TabOrder = 1
-      Text = 'admin'
       OnKeyPress = EdPasswordKeyPress
     end
     object Panel1: TPanel

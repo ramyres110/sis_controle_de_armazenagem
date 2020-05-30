@@ -20,10 +20,6 @@ type
     FUserLogged: TUser;
     FDinamicGridColumIndexes: Array of Integer;
 
-    procedure GoToSearch(const AComponentToFocus: TWinControl);
-    procedure GoToNew(const AComponentToFocus: TWinControl);
-    procedure GoToEdit(const AComponentToFocus: TWinControl);
-
     procedure SetFocusOnComponent(const AComponentToFocus: TWinControl);
     procedure SetColorOnEdits(const AParent: TTabSheet; AColor: TColor);
     procedure ClearAllEdits;
@@ -32,16 +28,20 @@ type
   public
     onNewClick: TEventListener;
 
+    procedure GoToSearch(const AComponentToFocus: TWinControl);
+    procedure GoToNew(const AComponentToFocus: TWinControl);
+    procedure GoToEdit(const AComponentToFocus: TWinControl);
+
     property userLogged: TUser read FUserLogged write FUserLogged;
   end;
 
 implementation
 
-  { TGenericForm }
+{ TGenericForm }
 
 procedure TGenericForm.BtnCancelClick(Sender: TObject);
 begin
-  if(Self.Tag = 2)then
+  if (Self.Tag = 2) or (Self.Tag = 3) then
   begin
     Close;
     Exit;
@@ -109,6 +109,8 @@ begin
   Self.ClearAllEdits;
   if (Self.Tag = 2) then
     Self.GoToNew(nil)
+  else if (Self.Tag = 3) then
+    Self.GoToEdit(nil)
   else
     Self.GoToSearch(nil);
 
@@ -121,7 +123,9 @@ var
   vTabAdd: TTabSheet;
 begin
   GoToNew(AComponentToFocus);
-  Self.Tag := 1;
+  if (Self.Tag = 0) then
+    Self.Tag := 1;
+
   vTabAdd := nil;
   for i := 0 to Self.ComponentCount - 1 do
   begin

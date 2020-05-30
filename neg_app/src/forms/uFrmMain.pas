@@ -9,9 +9,10 @@ uses
   FireDAC.Phys.IBBase,
   FireDAC.Phys.FB, Data.DB, FireDAC.Comp.Client, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, FireDAC.Comp.DataSet,
   FireDAC.VCLUI.Wait, FireDAC.Comp.UI, uFrmLogin, uEntUser, uMdlUser, uFrmUser, uFrmStorage, uMdlContract, uEntContract, uCmpPanelContract,
-  IPPeerClient, REST.Client, Data.Bind.Components, Data.Bind.ObjectScope, dxGDIPlusClasses;
+  IPPeerClient, REST.Client, Data.Bind.Components, Data.Bind.ObjectScope, dxGDIPlusClasses, uSrvAPI, System.Generics.Collections;
 
 type
+
   TFrmMain = class(TForm)
     MmMain: TMainMenu;
     Registros1: TMenuItem;
@@ -55,10 +56,9 @@ type
     Label2: TLabel;
     BtnNew: TButton;
     BtnFilterDone: TSpeedButton;
-    RESTClient1: TRESTClient;
-    RESTRequest1: TRESTRequest;
-    RESTResponse1: TRESTResponse;
     Image1: TImage;
+    LblFooterMsg: TLabel;
+    TimerCheckValidation: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -77,29 +77,40 @@ type
     procedure Button1Click(Sender: TObject);
     procedure scrollBoxWheelDown(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
     procedure scrollBoxWheelUp(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+    procedure TimerCheckValidationTimer(Sender: TObject);
   private
     { Private declarations }
     FUserLogged: TUser;
     FContractModel: TContractModel;
+    FContractList: TObjectList<TContract>;
 
     FTotalInitialScale: Integer;
     FTotalMoisture: Integer;
     FTotalFinalScale: Integer;
     FTotalFinalized: Integer;
 
+    FCheckThread: TThread;
+    FCheckThreadLocked: Boolean;
+
     procedure init;
     procedure loadUserInfo(AUserId: Integer);
 
     procedure newContract;
     procedure clearContracts;
-    procedure loadContracts;
+
+    procedure runCheckValidations;
 
     procedure onPanelUpdate(Sender: TObject);
 
     procedure incrementTotal(const APnl: TPanel; var ATotal: Integer);
+    function getContractList: TObjectList<TContract>;
   public
     { Public declarations }
+    procedure loadContracts;
+
     property userLogged: TUser read FUserLogged;
+    property contractList: TObjectList<TContract> read getContractList;
+    property checkThreadLocked: Boolean read FCheckThreadLocked write FCheckThreadLocked;
   end;
 
 var
@@ -109,8 +120,7 @@ implementation
 
 {$R *.dfm}
 
-uses uFrmProducer, uFrmGrain, uFrmContract, uFrmAbout, uFrmManual,
-  System.Generics.Collections, uUtlInputFields;
+uses uFrmProducer, uFrmGrain, uFrmContract, uFrmAbout, uFrmManual, uUtlInputFields;
 
 procedure TFrmMain.Contratos1Click(Sender: TObject);
 begin
@@ -118,6 +128,8 @@ begin
   try
     FrmContract.userLogged := FUserLogged;
     FrmContract.ShowModal();
+
+    loadContracts;
   finally
     FrmContract.Free;
   end;
@@ -133,6 +145,17 @@ end;
 
 procedure TFrmMain.FormDestroy(Sender: TObject);
 begin
+  if (FCheckThread <> nil) then
+  begin
+    FCheckThread.Terminate;
+    FCheckThread.Free
+  end;
+
+  if (Self.FContractList <> nil) then
+  begin
+    FreeAndNil(Self.FContractList);
+  end;
+
   if (Self.FUserLogged <> nil) then
   begin
     FreeAndNil(Self.FUserLogged);
@@ -163,6 +186,11 @@ begin
   end;
 end;
 
+function TFrmMain.getContractList: TObjectList<TContract>;
+begin
+  Result := FContractList;
+end;
+
 procedure TFrmMain.incrementTotal(const APnl: TPanel; var ATotal: Integer);
 begin
   inc(ATotal);
@@ -171,6 +199,16 @@ end;
 
 procedure TFrmMain.init();
 begin
+{$IFDEF DEBUG}
+  TimerCheckValidation.Interval := 5000;
+{$ELSE}
+  TimerCheckValidation.Interval := 10000;
+{$ENDIF}
+  TimerCheckValidation.Enabled := True;
+
+  FCheckThreadLocked := False;
+
+  LblFooterMsg.Caption := '';
   PnlFull.Visible := True;
 
   Self.loadContracts;
@@ -180,13 +218,12 @@ procedure TFrmMain.loadContracts;
 var
   vPanelContract: TPanelContract;
   vContract: TContract;
-  vList: TObjectList<TContract>;
 begin
   clearContracts;
-  vList := TObjectList<TContract>.Create;
+  FContractList := TObjectList<TContract>.Create;
   try
-    TContractModel.loadList(vList);
-    for vContract in vList do
+    TContractModel.loadList(FContractList);
+    for vContract in FContractList do
     begin
       vPanelContract := TPanelContract.Create(Self);
       vPanelContract.contract := vContract;
@@ -220,7 +257,6 @@ begin
 
     end;
   finally
-    FreeAndNil(vList);
   end;
 end;
 
@@ -247,6 +283,8 @@ begin
     FrmContract.Tag := 2; // Only Register
     FrmContract.userLogged := FUserLogged;
     FrmContract.ShowModal();
+
+    loadContracts;
   finally
     FrmContract.Free;
   end;
@@ -282,6 +320,73 @@ begin
   finally
     FrmProducer.Free;
   end;
+end;
+
+procedure TFrmMain.runCheckValidations;
+begin
+  if FCheckThreadLocked then
+    Exit;
+
+  if FCheckThread <> nil then
+  begin
+    FCheckThread.Terminate;
+    FCheckThread.Free;
+  end;
+
+  FCheckThread := TThread.CreateAnonymousThread(
+    procedure
+    var
+      vContract: TContract;
+      vSomeTrue, vResult: Boolean;
+      vList: TObjectList<TContract>;
+    begin
+      if (FrmMain = nil) then
+        Exit;
+
+      FrmMain.checkThreadLocked := True;
+
+      TThread.Synchronize(TThread.CurrentThread,
+        procedure
+        begin
+          FrmMain.LblFooterMsg.Caption := 'Verificando validações na API...';
+        end);
+
+      vList := TObjectList<TContract>.Create;
+      try
+        TContractModel.loadList(vList);
+        for vContract in vList do
+        begin
+          if (vContract.isValidated) then
+            Continue;
+
+          if (vContract.externalId = EmptyStr) then
+            Continue;
+
+          vResult := TApi.GetContractValidation(vContract.externalId);
+          if (vResult) then
+          begin
+            TContractModel.updateValidated(vContract.id, True, 'API');
+            vSomeTrue := True;
+          end;
+        end;
+      finally
+        FreeAndNil(vList);
+      end;
+
+      TThread.Synchronize(TThread.CurrentThread,
+        procedure
+        begin
+          if (vSomeTrue) then
+            FrmMain.loadContracts;
+          FrmMain.LblFooterMsg.Caption := '';
+        end);
+
+      FrmMain.checkThreadLocked := False;
+
+    end);
+
+  FCheckThread.FreeOnTerminate := False;
+  FCheckThread.Start;
 end;
 
 procedure TFrmMain.Sair1Click(Sender: TObject);
@@ -320,6 +425,11 @@ begin
   Self.newContract;
 end;
 
+procedure TFrmMain.TimerCheckValidationTimer(Sender: TObject);
+begin
+  Self.runCheckValidations;
+end;
+
 procedure TFrmMain.Usurio1Click(Sender: TObject);
 begin
   FrmUser := TFrmUser.Create(Self);
@@ -346,14 +456,13 @@ procedure TFrmMain.BtnFilterDoneClick(Sender: TObject);
 var
   vPoint: TPoint;
 begin
-   vPoint := BtnFilterDone.ClientToScreen(Point(0, BtnFilterDone.Height));
-   PpMnFilter.Popup(vPoint.X, vPoint.Y);
+  vPoint := BtnFilterDone.ClientToScreen(Point(0, BtnFilterDone.Height));
+  PpMnFilter.Popup(vPoint.X, vPoint.Y);
 end;
 
 procedure TFrmMain.BtnNewClick(Sender: TObject);
 begin
   Self.newContract;
-  loadContracts;
 end;
 
 procedure TFrmMain.Button1Click(Sender: TObject);
@@ -365,22 +474,30 @@ end;
 
 procedure TFrmMain.clearContracts;
 var
-  I: Integer;
+  i: Integer;
 begin
   FTotalInitialScale := 0;
   FTotalMoisture := 0;
   FTotalFinalScale := 0;
   FTotalFinalized := 0;
 
-  I := 0;
-  while I < Self.ComponentCount do
+  PnlTotalInitialScale.Caption := IntToStr(FTotalInitialScale);
+  PnlTotalMoisture.Caption := IntToStr(FTotalMoisture);
+  PnlTotalFinalScale.Caption := IntToStr(FTotalFinalScale);
+  PnlTotalFinalized.Caption := IntToStr(FTotalFinalized);
+
+  if (FContractList <> nil) then
+    FreeAndNil(FContractList);
+
+  i := 0;
+  while i < Self.ComponentCount do
   begin
-    if Self.Components[I] is TPanelContract then
+    if Self.Components[i] is TPanelContract then
     begin
-      Self.Components[I].Free;
-      I := 0;
+      Self.Components[i].Free;
+      i := 0;
     end;
-    inc(I);
+    inc(i);
   end;
 
 end;

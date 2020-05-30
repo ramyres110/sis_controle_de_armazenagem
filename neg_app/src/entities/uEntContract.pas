@@ -26,7 +26,8 @@ type
     FIsValidated: Boolean;
     FValidatedBy: String;
     FValidatedAt: TDate;
-    FExternalId: Integer;
+
+    FExternalId: string;
   public
     constructor Create;
     destructor Destroy; override;
@@ -50,7 +51,8 @@ type
     property isValidated: Boolean read FIsValidated write FIsValidated;
     property validatedBy: String read FValidatedBy write FValidatedBy;
     property validatedAt: TDate read FValidatedAt write FValidatedAt;
-    property externalId: Integer read FExternalId write FExternalId;
+
+    property externalId: string read FExternalId write FExternalId;
   end;
 
 implementation

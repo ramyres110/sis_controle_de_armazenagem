@@ -78,6 +78,7 @@ type
     function getComboBoxIndexByItemId(var ACbox: TComboBox; AId: Integer): Integer;
   public
     { Public declarations }
+    procedure prepareEdit(AId: Integer);
   end;
 
 var
@@ -86,7 +87,7 @@ var
 implementation
 
 uses
-  uEntUser, uEntGrain, uEntStorage, uEntProducer, uMdlGrain;
+  uEntUser, uEntGrain, uEntStorage, uEntProducer, uMdlGrain, uMdlProducer;
 
 {$R *.dfm}
 { TFrmContract }
@@ -142,7 +143,7 @@ begin
       Exit;
     end;
 
-  if (Self.Tag = 1) then
+  if (Self.Tag = 1) or (Self.Tag = 3) then
     Self.update
   else
     Self.save;
@@ -191,9 +192,10 @@ end;
 
 procedure TFrmContract.clear;
 begin
-  if (Self.Tag = 2) then
+  if (Self.Tag = 2) or ((Self.Tag = 3)) then
   begin
     Close;
+    Exit;
   end;
 
   Self.GoToSearch(nil);
@@ -205,35 +207,10 @@ procedure TFrmContract.DBGridDblClick(Sender: TObject);
 var
   vId: Integer;
 begin
-  Self.GoToEdit(CboxStorage);
-
   vId := DBGrid.Fields[0].AsInteger;
-  FContractModel.getById(vId);
-  if (FContractModel.contract <> nil) then
-  begin
-    CboxStorage.ItemIndex := getComboBoxIndexByItemId(CboxStorage, FContractModel.contract.storage.id);
-    CboxProducer.ItemIndex := getComboBoxIndexByItemId(CboxProducer, FContractModel.contract.producer.id);
-    CboxGrain.ItemIndex := getComboBoxIndexByItemId(CboxGrain, FContractModel.contract.grain.id);
-
-    EdInitialWeight.Text := FloatToStr(FContractModel.contract.initialWeight);
-    EdMoisturePercent.Text := FloatToStr(FContractModel.contract.moisturePercent);
-    EdFinalWeight.Text := FloatToStr(FContractModel.contract.finalWeight);
-
-    if (FContractModel.contract.isValidated) then
-    begin
-      RdGrValidated.ItemIndex := 1;
-      EdValidatedBy.Visible := True;
-      EdValidatedBy.Text := FContractModel.contract.validatedBy
-    end
-    else
-    begin
-      RdGrValidated.ItemIndex := 0;
-      EdValidatedBy.Visible := False;
-      EdValidatedBy.Text := '';
-    end;
-
-    CboxGrainChange(Sender);
-  end;
+  Self.GoToEdit(CboxStorage);
+  Self.prepareEdit(vId);
+  CboxGrainChange(Sender);
 end;
 
 procedure TFrmContract.delete;
@@ -328,6 +305,35 @@ begin
   calculate;
 end;
 
+procedure TFrmContract.prepareEdit(AId: Integer);
+begin
+  FContractModel.getById(AId);
+  if (FContractModel.contract <> nil) then
+  begin
+    CboxStorage.ItemIndex := getComboBoxIndexByItemId(CboxStorage, FContractModel.contract.storage.id);
+    CboxProducer.ItemIndex := getComboBoxIndexByItemId(CboxProducer, FContractModel.contract.producer.id);
+    CboxGrain.ItemIndex := getComboBoxIndexByItemId(CboxGrain, FContractModel.contract.grain.id);
+    CboxGrainChange(Self);
+
+    EdInitialWeight.Text := FloatToStr(FContractModel.contract.initialWeight);
+    EdMoisturePercent.Text := FloatToStr(FContractModel.contract.moisturePercent);
+    EdFinalWeight.Text := FloatToStr(FContractModel.contract.finalWeight);
+
+    if (FContractModel.contract.isValidated) then
+    begin
+      RdGrValidated.ItemIndex := 1;
+      EdValidatedBy.Visible := True;
+      EdValidatedBy.Text := FContractModel.contract.validatedBy
+    end
+    else
+    begin
+      RdGrValidated.ItemIndex := 0;
+      EdValidatedBy.Visible := False;
+      EdValidatedBy.Text := '';
+    end;
+  end;
+end;
+
 procedure TFrmContract.RdGrValidatedClick(Sender: TObject);
 begin
   if (RdGrValidated.ItemIndex = 1) then
@@ -337,21 +343,31 @@ begin
 end;
 
 procedure TFrmContract.save;
+var
+  VAuxProducer: TProducer;
 begin
   FContractModel.contract := TContract.Create;
   try
 
     FContractModel.contract.storage := TStorage.Create;
     FContractModel.contract.storage.id := Integer(CboxStorage.Items.Objects[CboxStorage.ItemIndex]);
+    FContractModel.contract.storage.name := CboxStorage.Text;
 
-    FContractModel.contract.producer := TProducer.Create;
-    FContractModel.contract.producer.id := Integer(CboxProducer.Items.Objects[CboxProducer.ItemIndex]);
+    TProducerModel.loadById(Integer(CboxProducer.Items.Objects[CboxProducer.ItemIndex]), VAuxProducer);
+    FContractModel.contract.producer := VAuxProducer;
 
     FContractModel.contract.grain := TGrain.Create;
     FContractModel.contract.grain.id := Integer(CboxGrain.Items.Objects[CboxGrain.ItemIndex]);
+    FContractModel.contract.grain.description := CboxGrain.Text;
+    FContractModel.contract.grain.priceKG := TGrainModel.getPriceById(FContractModel.contract.grain.id);
 
     FContractModel.contract.createdBy := TUser.Create;
     FContractModel.contract.createdBy.id := userLogged.id;
+    FContractModel.contract.createdBy.username := userLogged.username;
+
+    FContractModel.contract.changedBy := TUser.Create;
+    FContractModel.contract.changedBy.id := userLogged.id;
+    FContractModel.contract.changedBy.username := userLogged.username;
 
     if not(EdInitialWeight.Text = EmptyStr) then
     begin
@@ -359,6 +375,7 @@ begin
       FContractModel.contract.initialWeightedAt := now();
       FContractModel.contract.initialWeightedBy := TUser.Create;
       FContractModel.contract.initialWeightedBy.id := userLogged.id;
+      FContractModel.contract.initialWeightedBy.username := userLogged.username;
     end;
 
     if not(EdMoisturePercent.Text = EmptyStr) then
@@ -367,6 +384,7 @@ begin
       FContractModel.contract.moistureAt := now();
       FContractModel.contract.moistureBy := TUser.Create;
       FContractModel.contract.moistureBy.id := userLogged.id;
+      FContractModel.contract.moistureBy.username := userLogged.username;
     end;
 
     if not(EdFinalWeight.Text = EmptyStr) then
@@ -375,6 +393,7 @@ begin
       FContractModel.contract.finalWeightedAt := now();
       FContractModel.contract.finalWeightedBy := TUser.Create;
       FContractModel.contract.finalWeightedBy.id := userLogged.id;
+      FContractModel.contract.finalWeightedBy.username := userLogged.username;
     end;
 
     FContractModel.contract.isValidated := iif((RdGrValidated.ItemIndex = 1), True, False);
@@ -385,7 +404,7 @@ begin
     end;
 
     try
-      FContractModel.save();
+      FContractModel.save;
       showInformation('Contrato salvo com sucesso!');
     except
       on err: Exception do

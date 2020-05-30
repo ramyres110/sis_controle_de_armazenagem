@@ -5,7 +5,7 @@ interface
 uses
   Vcl.ExtCtrls, uEntContract, System.SysUtils, Vcl.Controls, Vcl.Menus,
   Vcl.StdCtrls, Vcl.Buttons, System.Classes, uUtlForm, uMdlContract, uUtlAlert,
-  uEntUser, uUtlCalculator;
+  uEntUser, uUtlCalculator, uFrmContract;
 
 type
   TPanelContract = class(TPanel)
@@ -16,6 +16,7 @@ type
     FPpItemEdit: TMenuItem;
     FPpItemDelete: TMenuItem;
     FLblHeader: TLabel;
+    FShapeValidateStatus: TShape;
     FBtnOption: TSpeedButton;
 
     FLblStorage: TLabel;
@@ -111,7 +112,16 @@ end;
 
 procedure TPanelContract.btnOptionEditClick(Sender: TObject);
 begin
-
+  FrmContract := TFrmContract.Create(Self);
+  try
+    FrmContract.userLogged := FUserLogged;
+    FrmContract.prepareEdit(FContract.id);
+    FrmContract.tag := 3;
+    FrmContract.ShowModal;
+  finally
+    FrmContract.Free;
+    onUpdate(Sender);
+  end;
 end;
 
 procedure TPanelContract.btnOptionValidarClick(Sender: TObject);
@@ -341,6 +351,25 @@ begin
     OnClick := btnOptionClick;
   end;
   FBtnOption.Parent := FPnlHeader;
+
+  // FPnlStatusHeader
+  FShapeValidateStatus := TShape.Create(Self);
+  with FShapeValidateStatus do
+  begin
+    AlignWithMargins := True;
+    Left := 4;
+    Top := 4;
+    Width := 24;
+    Height := 24;
+    Hint := 'Aguardando Validação';
+    Align := alLeft;
+    Brush.Color := clYellow;
+    ParentShowHint := False;
+    Pen.Color := clGray;
+    Shape := stCircle;
+    ShowHint := True;
+  end;
+  FShapeValidateStatus.Parent := FPnlHeader;
 end;
 
 constructor TPanelContract.Create(AOwner: TComponent);
@@ -404,6 +433,8 @@ begin
   if (FContract.isValidated) then
   begin
     FPpItemValidate.Visible := False;
+    FShapeValidateStatus.Brush.Color := clGreen;
+    FShapeValidateStatus.Hint := 'Validado por ' + FContract.validatedBy;
   end;
 
   FLblHeader.Caption := FLblHeader.Caption + IntToStr(FContract.id);

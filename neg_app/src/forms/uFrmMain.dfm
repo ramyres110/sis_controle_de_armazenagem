@@ -198,8 +198,6 @@ object FrmMain: TFrmMain
         TabOrder = 2
         OnMouseWheelDown = scrollBoxWheelDown
         OnMouseWheelUp = scrollBoxWheelUp
-        ExplicitLeft = 425
-        ExplicitTop = 43
       end
       object ScBxFinalized: TScrollBox
         Left = 645
@@ -221,8 +219,6 @@ object FrmMain: TFrmMain
         TabOrder = 3
         OnMouseWheelDown = scrollBoxWheelDown
         OnMouseWheelUp = scrollBoxWheelUp
-        ExplicitLeft = 651
-        ExplicitTop = 43
       end
       object Panel1: TPanel
         Left = 1
@@ -249,7 +245,7 @@ object FrmMain: TFrmMain
         Height = 48
         Align = alClient
         BevelOuter = bvNone
-        Caption = 'Humidade'
+        Caption = 'Umidade'
         Color = 14209987
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -367,8 +363,6 @@ object FrmMain: TFrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 11
-        ExplicitLeft = 651
-        ExplicitTop = 424
       end
     end
     object Panel12: TPanel
@@ -389,6 +383,18 @@ object FrmMain: TFrmMain
         Height = 16
         Align = alLeft
         Caption = 'LblUserInfo'
+      end
+      object LblFooterMsg: TLabel
+        AlignWithMargins = True
+        Left = 783
+        Top = 3
+        Width = 76
+        Height = 16
+        Align = alRight
+        Caption = 'LblFooterMsg'
+        Layout = tlCenter
+        ExplicitLeft = 416
+        ExplicitTop = 8
       end
     end
   end
@@ -413,7 +419,7 @@ object FrmMain: TFrmMain
       48)
     object Label2: TLabel
       AlignWithMargins = True
-      Left = 57
+      Left = 53
       Top = 3
       Width = 339
       Height = 42
@@ -426,8 +432,6 @@ object FrmMain: TFrmMain
       Font.Style = []
       ParentFont = False
       Layout = tlCenter
-      ExplicitLeft = 10
-      ExplicitTop = 13
       ExplicitHeight = 19
     end
     object BtnFilterDone: TSpeedButton
@@ -478,7 +482,7 @@ object FrmMain: TFrmMain
       AlignWithMargins = True
       Left = 5
       Top = 5
-      Width = 44
+      Width = 40
       Height = 38
       Margins.Left = 5
       Margins.Top = 5
@@ -749,30 +753,11 @@ object FrmMain: TFrmMain
       RadioItem = True
     end
   end
-  object RESTClient1: TRESTClient
-    Accept = 'application/json, text/plain; q=0.9, text/html;q=0.8,'
-    AcceptCharset = 'UTF-8, *;q=0.8'
-    AcceptEncoding = 'identity'
-    BaseURL = 'http://www.songsterr.com/a/ra'
-    Params = <>
-    HandleRedirects = True
-    Left = 251
-    Top = 153
-  end
-  object RESTRequest1: TRESTRequest
-    Client = RESTClient1
-    Params = <
-      item
-        name = 'pattern'
-        Value = 'Madonna'
-      end>
-    Resource = 'songs.json'
-    Response = RESTResponse1
-    Left = 355
-    Top = 169
-  end
-  object RESTResponse1: TRESTResponse
-    Left = 315
-    Top = 225
+  object TimerCheckValidation: TTimer
+    Enabled = False
+    Interval = 10000
+    OnTimer = TimerCheckValidationTimer
+    Left = 448
+    Top = 16
   end
 end

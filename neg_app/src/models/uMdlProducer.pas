@@ -30,6 +30,7 @@ type
     property producer: TProducer read FProducer write FProducer;
 
     class procedure loadList(var AList:TObjectList<TProducer>);
+    class procedure loadById(AId: Integer; var AProducer: TProducer);
   end;
 
 implementation
@@ -156,6 +157,31 @@ begin
     end;
   finally
     FreeAndNil(vQry);
+  end;
+end;
+
+class procedure TProducerModel.loadById(AId: Integer; var AProducer: TProducer);
+var
+  vMdl: TProducerModel;
+begin
+  if (AProducer = nil) then
+    AProducer := TProducer.Create;
+
+  vMdl := TProducerModel.Create;
+  try
+    vMdl.getById(AId);
+    if (vMdl.producer <> nil) then
+    begin
+      AProducer.id := vMdl.producer.id;
+      AProducer.name := vMdl.producer.name;
+      AProducer.document := vMdl.producer.document;
+      AProducer.phone := vMdl.producer.phone;
+      AProducer.email := vMdl.producer.email;
+      AProducer.createdAt := vMdl.producer.createdAt;
+      AProducer.changedAt := vMdl.producer.changedAt;
+    end;
+  finally
+    FreeAndNil(vMdl);
   end;
 end;
 

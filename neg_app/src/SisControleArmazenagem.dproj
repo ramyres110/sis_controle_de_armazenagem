@@ -7,7 +7,7 @@
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Release</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
-        <TargetedPlatforms>3</TargetedPlatforms>
+        <TargetedPlatforms>1</TargetedPlatforms>
         <AppType>Application</AppType>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
@@ -45,13 +45,19 @@
         <CfgParent>Base</CfgParent>
         <Base>true</Base>
     </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
+        <Cfg_2_Win32>true</Cfg_2_Win32>
+        <CfgParent>Cfg_2</CfgParent>
+        <Cfg_2>true</Cfg_2>
+        <Base>true</Base>
+    </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_MajorVer>0</VerInfo_MajorVer>
         <VerInfo_Release>1</VerInfo_Release>
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
         <VerInfo_Locale>1046</VerInfo_Locale>
-        <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+        <Manifest_File>None</Manifest_File>
         <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=0.0.1.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <DCC_BplOutput>..\bin\</DCC_BplOutput>
         <DCC_DcuOutput>..\bin\dcu</DCC_DcuOutput>
@@ -63,9 +69,11 @@
         <DCC_K>false</DCC_K>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
+        <VerInfo_MajorVer>1</VerInfo_MajorVer>
+        <VerInfo_Release>0</VerInfo_Release>
+        <Icon_MainIcon>SisControleArmazenagem_Icon.ico</Icon_MainIcon>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <DCC_UsePackage>DataSnapIndy10ServerTransport;dxSkinLiquidSkyRS19;dxSpreadSheetRS19;cxBarEditItemRS19;frxDBX19;FireDACPgDriver;dxWizardControlRS19;frxBDE19;dxPScxCommonRS19;tmswizdXE5;dxThemeRS19;frx19;cxGridRS19;fsADO19;dxMapControlRS19;DBXInterBaseDriver;DataSnapServer;DataSnapCommon;dxPScxExtCommonRS19;frxADO19;PKIECtrl19;cxSchedulerRS19;DbxCommonDriver;vclimg;dbxcds;dxFlowChartRS19;DatasnapConnectorsFreePascal;dxSkinSpringTimeRS19;dxdbtrRS19;vcldb;dxDockingRS19;dxdborRS19;dxSkinsdxDLPainterRS19;cxSpreadSheetRS19;dxtrmdRS19;dxSpellCheckerRS19;dxRibbonCustomizationFormRS19;dxSkinOffice2013LightGrayRS19;CustomIPTransport;dxTileControlRS19;dsnap;IndyIPServer;dxSkinFoggyRS19;dxPSCoreRS19;IndyCore;cxSchedulerGridRS19;cxPivotGridOLAPRS19;dxSkinStardustRS19;CloudService;FmxTeeUI;FireDACIBDriver;dxSkinXmas2008BlueRS19;TVidGrab;dxSkinValentineRS19;dxPScxSchedulerLnkRS19;dxSkinDarkSideRS19;dxSkinLondonLiquidSkyRS19;FireDACDb2Driver;frxe19;fsBDE19;dxBarExtDBItemsRS19;dxTabbedMDIRS19;frxDB19;dxSkinOffice2013WhiteRS19;dxSkinSharpRS19;bindcompfmx;dxSkinBlueprintRS19;dxSkinOffice2007PinkRS19;vcldbx;cxExportRS19;FireDACODBCDriver;nrcommd19;dxSkinCoffeeRS19;dbrtl;FireDACCommon;bindcomp;inetdb;dxSkinBlueRS19;dxServerModeRS19;DBXOdbcDriver;vclFireDAC;dxSkinMoneyTwinsRS19;madDisAsm_;cxPivotGridChartRS19;xmlrtl;dxSkiniMaginaryRS19;ibxpress;dxSkinOffice2007GreenRS19;FireDACCommonDriver;bindengine;vclactnband;soaprtl;FMXTee;dxRibbonRS19;fsDB19;bindcompvcl;dxADOServerModeRS19;vclie;dxPSdxLCLnkRS19;madExcept_;dxSkinBlackRS19;dxSkinOffice2010BlackRS19;dxSkinSevenClassicRS19;FireDACMSSQLDriver;DBXInformixDriver;Intraweb;dsnapcon;DBXFirebirdDriver;dxSkinscxSchedulerPainterRS19;inet;dxSkinsdxNavBarPainterRS19;cxSchedulerRibbonStyleEventEditorRS19;dxPSdxFCLnkRS19;FireDACMySQLDriver;vclx;dxPSdxSpreadSheetLnkRS19;dxPSPrVwRibbonRS19;dxPSDBTeeChartRS19;DBXSybaseASADriver;RESTComponents;dxSkinLilianRS19;dxSkinscxPCPainterRS19;dbexpress;IndyIPClient;dxSkinSharpPlusRS19;cxSchedulerTreeBrowserRS19;dxPScxSSLnkRS19;dxPScxPivotGridLnkRS19;tmsdXE5;FireDACSqliteDriver;DBXSqliteDriver;dxPSdxDBTVLnkRS19;dxSkinOffice2007BlueRS19;cxDataRS19;cxLibraryRS19;fmx;IndySystem;TeeDB;dxPsPrVwAdvRS19;dxSkinHighContrastRS19;vclib;inetdbbde;DataSnapClient;DataSnapProviderClient;DBXSybaseASEDriver;dxmdsRS19;dxSkinOffice2010SilverRS19;dxSkinsdxBarPainterRS19;frxIBX19;MetropolisUILiveTile;dxPSdxOCLnkRS19;vcldsnap;dxPSdxGaugeControlLnkRS19;fmxFireDAC;DBXDb2Driver;dxSkinDevExpressDarkStyleRS19;DBXOracleDriver;dxBarDBNavRS19;vclribbon;dxSkinSilverRS19;dxSkinVS2010RS19;fmxase;vcl;dxRichEditControlRS19;dxPSdxDBOCLnkRS19;IndyIPCommon;DBXMSSQLDriver;CodeSiteExpressPkg;dxBarRS19;cxTreeListdxBarPopupMenuRS19;fsIBX19;DataSnapFireDAC;FireDACDBXDriver;dxFireDACServerModeRS19;inetdbxpress;cxEditorsRS19;dxSkinMcSkinRS19;adortl;dxSkinOffice2007SilverRS19;madBasic_;FireDACASADriver;dxSkinSevenRS19;dxDBXServerModeRS19;dxLayoutControlRS19;dxPSTeeChartRS19;dxSkinOffice2013DarkGrayRS19;dxSkinWhiteprintRS19;cxPageControlRS19;dxGaugeControlRS19;fs19;rtl;DbxClientDriver;dxPScxGridLnkRS19;Tee;cxVerticalGridRS19;dxSkinMetropolisDarkRS19;svnui;dxSkinsdxRibbonPainterRS19;dxSkinSummer2008RS19;dxSkinTheAsphaltWorldRS19;dxComnRS19;IndyProtocols;DBXMySQLDriver;cxPivotGridRS19;PKIEDB19;dxPSLnksRS19;tmsxlsdXE5;bindcompdbx;TeeUI;dxSkinDarkRoomRS19;dxSkinPumpkinRS19;dxBarExtItemsRS19;FireDACADSDriver;vcltouch;dxNavBarRS19;ZscanBTImage;MedicalConnection;fsTee19;VclSmp;FireDAC;VCLRESTComponents;dxGDIPlusRS19;frxTee19;DataSnapConnectors;FireDACDataSnapDriver;dxSkinMetropolisRS19;dxCoreRS19;dxPScxVGridLnkRS19;dxPScxTLLnkRS19;dxSkinsCoreRS19;fmxobj;dxSkinGlassOceansRS19;dxPScxPCProdRS19;svn;dxSkinOffice2010BlueRS19;tmsexdXE5;FireDACOracleDriver;fmxdae;dxorgcRS19;bdertl;dxSkinOffice2007BlackRS19;cxTreeListRS19;dxSkinDevExpressStyleRS19;FireDACMSAccDriver;dxSkinCaramelRS19;$(DCC_UsePackage)</DCC_UsePackage>
-        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
@@ -104,6 +112,14 @@
         <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
         <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
         <DCC_DebugInformation>0</DCC_DebugInformation>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+        <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+        <DCC_DcuOutput>..\dcu</DCC_DcuOutput>
+        <VerInfo_Release>0</VerInfo_Release>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <VerInfo_MajorVer>1</VerInfo_MajorVer>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
@@ -240,7 +256,7 @@
             <Deployment/>
             <Platforms>
                 <Platform value="Win32">True</Platform>
-                <Platform value="Win64">True</Platform>
+                <Platform value="Win64">False</Platform>
             </Platforms>
         </BorlandProject>
         <ProjectFileVersion>12</ProjectFileVersion>

@@ -74,4 +74,5 @@ modules/
 *.res
 /bin
 /data
+/dcu
 
