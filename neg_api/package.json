@@ -1,6 +1,6 @@
 {
   "name": "api_contratos_sis_controle_armazenagem",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "description": "API de Gestão de Contratos para o Sistema de Controle de Armazenagem de Gãos",
   "main": "bin/index.js",
   "directories": {
